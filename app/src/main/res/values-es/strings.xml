@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Translate -->
+    <string name="action_settings">Ajustes</string>
+
+    <string name="mapa">Mapa</string>
+    <string name="add_casos">Añadir Casos</string>
+    <string name="casos_adicionados">Mis Casos Añadidos</string>
+    <string name="procurar_casos">Buscar Casos</string>
+    <string name="add_focos">Añadir Focos</string>
+    <string name="focos_adicionados">Focos Añadidos</string>
+    <string name="procurar_focos">Buscar Focos</string>
+    <string name="informacoes">Informaciones</string>
+    <string name="configuracoes">Ajustes</string>
+    <string name="sair">Salir</string>
+</resources>

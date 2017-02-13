@@ -4,5 +4,21 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
+    <!-- Tranduzido -->
+    <string name="action_settings">Configurações</string>
+
+    <string name="mapa">Mapa</string>
+    <string name="add_casos">Adicionar Casos</string>
+    <string name="casos_adicionados">Casos Adicionados</string>
+    <string name="procurar_casos">Procurar Casos</string>
+    <string name="add_focos">Adicionar Focos</string>
+    <string name="focos_adicionados">Focos Adicionados</string>
+    <string name="procurar_focos">Procurar Focos</string>
+    <string name="informacoes">Informações</string>
+    <string name="configuracoes">Configurações</string>
+    <string name="sair">Sair</string>
+
+    <!-- Precisa traduzir -->
+    <string name="title_foco">Focos</string>
+    <string name="title_casos">Casos</string>
 </resources>
