@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/doenca"
+        android:textSize="17sp"
+        android:textColor="#000"
+        android:id="@+id/tdoencap"
+        android:layout_below="@+id/endereço"
+        android:layout_alignLeft="@+id/endereço"
+        android:layout_alignStart="@+id/endereço"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/nome_completo"
+        android:textColor="#000"
+        android:textSize="17sp"
+        android:id="@+id/nomep"
+        android:layout_marginLeft="23dp"
+        android:layout_marginStart="23dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="32dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/Nome"
+        android:hint="Ex: Maria Aquino"
+        android:textSize="15dp"
+        android:layout_below="@+id/nomep"
+        android:layout_alignLeft="@+id/nomep"
+        android:layout_alignStart="@+id/nomep"
+        android:layout_alignRight="@+id/Registrar"
+        android:layout_alignEnd="@+id/Registrar" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:layout_marginTop="23dp"
+        android:layout_below="@+id/tdoencap"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/endereco"
+        android:textSize="17sp"
+        android:textColor="#000"
+        android:id="@+id/enderecop"
+        android:layout_below="@+id/Nome"
+        android:layout_alignLeft="@+id/Nome"
+        android:layout_alignStart="@+id/Nome" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Registrar casos de pacientes que possuem Dengue, Zika vírus ou Chicungunya. Preencher todos os campos"
+        android:textSize="10dp"
+        android:id="@+id/info"
+        android:layout_marginTop="27dp"
+        android:layout_below="@+id/spinner"
+        android:layout_alignLeft="@+id/tdoencap"
+        android:layout_alignStart="@+id/tdoencap" />
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:text="@string/registrar_caso"
+        android:id="@+id/Registrar"
+        android:onClick="PinarMapa"
+        android:textColor="#fff"
+        android:background="@color/colorPrimary"
+        android:layout_gravity="right"
+        android:layout_marginTop="36dp"
+        android:layout_below="@+id/info"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="24dp"
+        android:layout_marginEnd="24dp" />
+
+    <AutoCompleteTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/endereço"
+        android:hint="Ex: Rua Aedes, 259"
+        android:layout_marginTop="19dp"
+        android:layout_below="@+id/enderecop"
+        android:layout_alignLeft="@+id/enderecop"
+        android:layout_alignStart="@+id/enderecop"
+        android:layout_alignRight="@+id/Registrar"
+        android:layout_alignEnd="@+id/Registrar" />
+</RelativeLayout>
