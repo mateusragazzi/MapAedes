@@ -18,7 +18,9 @@ import butterknife.ButterKnife;
 
 public class Main extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    private String mUser;
+    private String[] mUsers;
+    private Menu mMenu;
     @BindView(R.id.content_main)
     RelativeLayout mContentMain;
     @BindView(R.id.nav_view)
@@ -34,7 +36,7 @@ public class Main extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
-
+        searchData();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -43,6 +45,13 @@ public class Main extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        mMenu = navigationView.getMenu();
+        onNavigationItemSelected(navigationView.getMenu().getItem(0));
+    }
+
+    private void searchData() {
+        mUsers = getResources().getStringArray(R.array.users);
+        mUser = mUsers[0];
     }
 
     @Override
@@ -68,7 +77,6 @@ public class Main extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
@@ -80,8 +88,13 @@ public class Main extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
+        //se for medico, desativa focos
+        if (mUsers[0].equals(mUser)) {
+            mMenu.findItem(R.id.nav_title_focos).setVisible(false);
+        } else {
+            mMenu.findItem(R.id.nav_title_casos).setVisible(false);
+        }
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

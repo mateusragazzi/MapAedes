@@ -14,17 +14,17 @@
                     <item
                         android:id="@+id/nav_addfoco"
                         android:icon="@drawable/ic_menu_add"
-                        android:title="Adicionar" />
+                        android:title="@string/add_focos"/>
 
                     <item
                         android:id="@+id/nav_listarfoco"
                         android:icon="@drawable/ic_menu_list"
-                        android:title="Listar" />
+                        android:title="@string/focos_adicionados"/>
 
                     <item
                         android:id="@+id/nav_buscarfoco"
                         android:icon="@drawable/ic_menu_search"
-                        android:title="Buscar" />
+                        android:title="@string/procurar_focos"/>
                 </group>
             </menu>
         </item>
@@ -36,17 +36,17 @@
                     <item
                         android:id="@+id/nav_addcasos"
                         android:icon="@drawable/ic_menu_add"
-                        android:title="Adicionar" />
+                        android:title="@string/add_casos"/>
 
                     <item
                         android:id="@+id/nav_listarcasos"
                         android:icon="@drawable/ic_menu_list"
-                        android:title="Listar" />
+                        android:title="@string/casos_adicionados"/>
 
                     <item
                         android:id="@+id/nav_buscarcasos"
                         android:icon="@drawable/ic_menu_search"
-                        android:title="Buscar" />
+                        android:title="@string/procurar_casos"/>
                 </group>
             </menu>
         </item>

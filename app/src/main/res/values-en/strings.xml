@@ -5,12 +5,12 @@
     <string name="action_settings">Settings</string>
 
     <string name="mapa">Map</string>
-    <string name="add_casos">Add Cases</string>
-    <string name="casos_adicionados">My Added Cases</string>
-    <string name="procurar_casos">Search for Cases</string>
+    <string name="add_casos">Add</string>
+    <string name="casos_adicionados">My Added</string>
+    <string name="procurar_casos">Search</string>
     <string name="add_focos">Add Focos</string>
-    <string name="focos_adicionados">My Added Focos</string>
-    <string name="procurar_focos">Search for Focos</string>
+    <string name="focos_adicionados">My Added</string>
+    <string name="procurar_focos">Search</string>
     <string name="informacoes">Informations</string>
     <string name="configuracoes">Configurations</string>
     <string name="sair">Logout</string>
@@ -19,5 +19,7 @@
     <string name="doenca">Desease</string>
     <string name="endereco">Address</string>
     <string name="registrar_caso">Register case</string>
+    <string name="title_foco">Focos</string>
+    <string name="title_casos">Cases</string>
 
 </resources>

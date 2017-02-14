@@ -8,12 +8,12 @@
     <string name="action_settings">Configurações</string>
 
     <string name="mapa">Mapa</string>
-    <string name="add_casos">Adicionar Casos</string>
-    <string name="casos_adicionados">Casos Adicionados</string>
-    <string name="procurar_casos">Procurar Casos</string>
+    <string name="add_casos">Adicionar</string>
+    <string name="casos_adicionados">Listar Adicionados</string>
+    <string name="procurar_casos">Procurar</string>
     <string name="add_focos">Adicionar Focos</string>
-    <string name="focos_adicionados">Focos Adicionados</string>
-    <string name="procurar_focos">Procurar Focos</string>
+    <string name="focos_adicionados">Listar Adicionados</string>
+    <string name="procurar_focos">Procurar</string>
     <string name="informacoes">Informações</string>
     <string name="configuracoes">Configurações</string>
     <string name="sair">Sair</string>
@@ -22,9 +22,14 @@
     <string name="endereco">Endereço</string>
     <string name="login">Login</string>
     <string name="registrar_caso">Registrar caso</string>
-    <!-- Precisa traduzir -->
     <string name="title_foco">Focos</string>
     <string name="title_casos">Casos</string>
+
+    <!-- Precisa traduzir -->
+    <string-array name="users">
+        <item>Médico</item>
+        <item>Agente de Saúde</item>
+    </string-array>
 
 
 </resources>
