@@ -7,6 +7,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.TextAppearanceSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
@@ -47,6 +49,7 @@ public class Main extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         mMenu = navigationView.getMenu();
         onNavigationItemSelected(navigationView.getMenu().getItem(0));
+
     }
 
     private void searchData() {
@@ -92,13 +95,21 @@ public class Main extends AppCompatActivity
         //se for medico, desativa focos
         if (mUsers[0].equals(mUser)) {
             mMenu.findItem(R.id.nav_title_focos).setVisible(false);
+            configuraTitle(mMenu.findItem(R.id.nav_title_casos));
         } else {
             mMenu.findItem(R.id.nav_title_casos).setVisible(false);
+            configuraTitle(mMenu.findItem(R.id.nav_title_focos));
         }
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void configuraTitle(MenuItem tools) {
+        SpannableString s = new SpannableString(tools.getTitle());
+        s.setSpan(new TextAppearanceSpan(this, R.style.Title), 0, s.length(), 0);
+        tools.setTitle(s);
     }
 }
