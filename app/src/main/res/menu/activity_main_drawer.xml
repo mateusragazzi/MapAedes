@@ -24,7 +24,7 @@
                     <item
                         android:id="@+id/nav_buscarfoco"
                         android:icon="@drawable/ic_menu_search"
-                        android:title="Listar" />
+                        android:title="Buscar" />
                 </group>
             </menu>
         </item>
@@ -46,7 +46,7 @@
                     <item
                         android:id="@+id/nav_buscarcasos"
                         android:icon="@drawable/ic_menu_search"
-                        android:title="Listar" />
+                        android:title="Buscar" />
                 </group>
             </menu>
         </item>
