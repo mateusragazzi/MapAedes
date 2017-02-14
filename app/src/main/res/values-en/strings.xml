@@ -14,4 +14,10 @@
     <string name="informacoes">Informations</string>
     <string name="configuracoes">Configurations</string>
     <string name="sair">Logout</string>
+    <string name="login">Login</string>
+    <string name="nome_completo">Full Name</string>
+    <string name="doenca">Desease</string>
+    <string name="endereco">Address</string>
+    <string name="registrar_caso">Register case</string>
+
 </resources>

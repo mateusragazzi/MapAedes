@@ -17,8 +17,14 @@
     <string name="informacoes">Informações</string>
     <string name="configuracoes">Configurações</string>
     <string name="sair">Sair</string>
-
+    <string name="nome_completo">Nome Completo</string>
+    <string name="doenca">Doença</string>
+    <string name="endereco">Endereço</string>
+    <string name="login">Login</string>
+    <string name="registrar_caso">Registrar caso</string>
     <!-- Precisa traduzir -->
     <string name="title_foco">Focos</string>
     <string name="title_casos">Casos</string>
+
+
 </resources>
