@@ -1,5 +1,7 @@
 package com.example.mateus.mapaedes.Activities;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,7 +14,9 @@ import android.text.style.TextAppearanceSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.example.mateus.mapaedes.Adapters.BancoDeDados;
 import com.example.mateus.mapaedes.R;
 
 import butterknife.BindView;
@@ -49,6 +53,7 @@ public class Main extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         mMenu = navigationView.getMenu();
         onNavigationItemSelected(navigationView.getMenu().getItem(0));
+
 
     }
 

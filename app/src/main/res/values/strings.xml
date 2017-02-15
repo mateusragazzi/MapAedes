@@ -24,12 +24,33 @@
     <string name="registrar_caso">Registrar caso</string>
     <string name="title_foco">Focos</string>
     <string name="title_casos">Casos</string>
+    <string name="sobrenome">Sobrenome</string>
+    <string name="nome_usuario">Nome de Usuário</string>
+    <string name="senha">Senha</string>
+    <string name="cidade">Cidade</string>
+    <string name="pessoa">Pessoa</string>
+    <string name="criar_conta">Não possui uma conta?</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="cadastro">Cadastre-se</string>
 
-    <!-- Precisa traduzir -->
+
     <string-array name="users">
         <item>Médico</item>
         <item>Agente de Saúde</item>
     </string-array>
 
+    <string-array name="doencas">
+        <item>Dengue</item>
+        <item>Zika vírus</item>
+        <item>Chikungunya</item>
+        <item>Nyongnyong</item>
+        <item>Guillaint barré</item>
+    </string-array>
+
+    <string-array name="pessoas">
+        <item>Agente de saúde</item>
+        <item>Médico</item>
+        <item>População</item>
+    </string-array>
 
 </resources>
