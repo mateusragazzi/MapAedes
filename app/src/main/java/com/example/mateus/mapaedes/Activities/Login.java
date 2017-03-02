@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -17,7 +16,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.R.attr.id;
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
+import static com.example.mateus.mapaedes.R.string.senha;
 
 /**
  * Created by zazah on 13/02/2017.
@@ -45,26 +45,24 @@ public class Login extends AppCompatActivity {
         //banco.execSQL("DELETE FROM login"); //delete all rows in a table
 
 
-        Cursor cursor = banco.query("login", null, null, null, null, null, null);
 
-        if (cursor.moveToFirst()){
+        Cursor cur = banco.rawQuery("SELECT EXISTS (SELECT 1 FROM login)", null);
 
-           String  usuario = cursor.getString(cursor.getColumnIndex("usuario"));
-           String  senha = cursor.getString(cursor.getColumnIndex("senha"));
+            if (cur != null) {
+                cur.moveToFirst();
+                if (cur.getInt(0) != 0) {
+                    Intent intent = new Intent(Login.this, Main.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
 
-
-
-            if (usuario != null ) {
-                Intent intent = new Intent(this, Main.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                }
             }
         }
 
 
 
 
-    }
+
 
     @OnClick(R.id.login_button)
     public void Login() {

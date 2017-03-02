@@ -26,8 +26,6 @@
         android:textColor="#000"
         android:textSize="17sp"
         android:id="@+id/nomep"
-        android:layout_marginLeft="23dp"
-        android:layout_marginStart="23dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -49,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/spinner"
-        android:layout_marginTop="23dp"
+        android:layout_marginTop="15dp"
         android:layout_below="@+id/tdoencap"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -89,15 +87,14 @@
         android:layout_below="@+id/info"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginRight="24dp"
-        android:layout_marginEnd="24dp" />
+        />
 
     <AutoCompleteTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/endereço"
         android:hint="Ex: Rua Aedes, 259"
-        android:layout_marginTop="19dp"
+        android:layout_marginTop="10dp"
         android:layout_below="@+id/enderecop"
         android:layout_alignLeft="@+id/enderecop"
         android:layout_alignStart="@+id/enderecop"

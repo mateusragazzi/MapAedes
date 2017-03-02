@@ -1,6 +1,6 @@
 package com.example.mateus.mapaedes.Fragments;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,4 +37,10 @@ public class AdicionarCaso extends Fragment {
         return g;
     }
 
+    public AdicionarCaso() {
+
+    }
+
+    public interface OnFragmentInteractionListener {
+    }
 }
