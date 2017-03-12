@@ -1,6 +1,8 @@
 package com.example.mateus.mapaedes.Activities;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,6 +25,18 @@ import com.example.mateus.mapaedes.Fragments.Informacoes;
 import com.example.mateus.mapaedes.Fragments.Logout;
 import com.example.mateus.mapaedes.Fragments.MeusCasosAdicionados;
 import com.example.mateus.mapaedes.R;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,12 +49,19 @@ Main extends AppCompatActivity
         Configuracoes.OnFragmentInteractionListener,
         Informacoes.OnFragmentInteractionListener,
         Logout.OnFragmentInteractionListener,
-        MeusCasosAdicionados.OnFragmentInteractionListener{
+        MeusCasosAdicionados.OnFragmentInteractionListener,
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 
     private String mUser;
     private String[] mUsers;
     private Menu mMenu;
     public FragmentManager fm = getSupportFragmentManager();
+    public static GoogleMap mMap;
+    public GoogleApiClient client;
+    public GoogleApiClient mGoogleApiClient = null;
+    public SupportMapFragment mFragMap = null;
+    private static final double CG_LAT = -20.4435,
+            CG_LGT = -54.6478;
     @BindView(R.id.content_main)
     RelativeLayout mContentMain;
     @BindView(R.id.nav_view)
@@ -68,7 +89,8 @@ Main extends AppCompatActivity
         mMenu = navigationView.getMenu();
         onNavigationItemSelected(navigationView.getMenu().getItem(0));
 
-
+        buildGoogleApiClient();
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     private void searchData() {
@@ -120,8 +142,27 @@ Main extends AppCompatActivity
             configuraTitle(mMenu.findItem(R.id.nav_title_casos));
             switch (item.getItemId()) {
                 case R.id.nav_map:
-                    frag = new MeusCasosAdicionados();
-                    trocaFrag(fm, frag);
+
+                    mFragMap = new SupportMapFragment();
+                    mFragMap.getMapAsync(new OnMapReadyCallback() {
+                        @Override
+                        public void onMapReady(GoogleMap googleMap) {
+                            mMap = googleMap;
+
+                            LatLng latlng ;
+                            latlng = new LatLng(CG_LAT, CG_LGT);
+                            final CameraPosition cp = new CameraPosition.Builder().target(latlng)
+                                    .zoom(13).bearing(0).tilt(00).build();
+                            CameraUpdate cam = CameraUpdateFactory.newCameraPosition(cp);
+                            mMap.moveCamera(cam);
+
+                        }
+                    });
+                    fm.beginTransaction()
+                            .replace(R.id.Conteiner, mFragMap)
+                            .addToBackStack("")
+                            .commit();
+
                     break;
                 case R.id.nav_addcasos:
                     frag = new AdicionarCaso();
@@ -170,5 +211,37 @@ Main extends AppCompatActivity
         SpannableString s = new SpannableString(tools.getTitle());
         s.setSpan(new TextAppearanceSpan(this, R.style.Title), 0, s.length(), 0);
         tools.setTitle(s);
+    }
+
+    public GoogleApiClient getmGoogleApiClient() {
+        if (mGoogleApiClient == null) {
+            buildGoogleApiClient();
+        }
+        return mGoogleApiClient;
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .enableAutoManage(this, 0 /* clientId */, this)
+                .addApi(Places.GEO_DATA_API)
+                .build();
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }
