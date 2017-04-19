@@ -1,10 +1,12 @@
 package com.example.mateus.mapaedes.Activities;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -16,9 +18,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
-import static com.example.mateus.mapaedes.R.string.senha;
-
 /**
  * Created by zazah on 13/02/2017.
  */
@@ -29,7 +28,7 @@ public class Login extends AppCompatActivity {
     @BindView(R.id.login_pswd)
     EditText mLoginPswd;
 
-     BancoDeDados mBancoDeDados = new BancoDeDados(this);
+     BancoDeDados bd = new BancoDeDados(this);
 
 
     @Override
@@ -39,10 +38,9 @@ public class Login extends AppCompatActivity {
         ButterKnife.bind(this);
 
 
-        SQLiteDatabase banco = mBancoDeDados.getReadableDatabase();
+        SQLiteDatabase banco = bd.getReadableDatabase();
 
-
-        //banco.execSQL("DELETE FROM login"); //delete all rows in a table
+      //  banco.execSQL("DELETE FROM login"); //delete all rows in a table
 
 
 
@@ -59,32 +57,55 @@ public class Login extends AppCompatActivity {
             }
         }
 
-
-
-
-
-
-    @OnClick(R.id.login_button)
-    public void Login() {
-
+    public void LOGIN(View view) {
+        int conta = 0;
         String usuario = mLoginUser.getText().toString();
         String senha = mLoginPswd.getText().toString();
-        String cidade = "Campo Grande";
-        int idUsuario = 1;
-        double lat = -22.9066800;
-        double lng = -43.5529000;
 
-        BancoDeDadosAdapter c = new BancoDeDadosAdapter();
-        c.setId_usuario(idUsuario);
-        c.setUsuario(usuario);
-        c.setSenha(senha);
-        c.setCidade(cidade);
-        c.setLat(lat);
-        c.setLng(lng);
-        mBancoDeDados.insertContact(c);
-        Toast.makeText(this,"Login realizado com sucesso", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(Login.this, Main.class);
-        startActivity(intent);
+        SQLiteDatabase banco = bd.getReadableDatabase();
+        Cursor cursor = banco.query("usuario", null, null, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String userBd = cursor.getString(cursor.getColumnIndex("userUser"));
+                String senhaBd = cursor.getString(cursor.getColumnIndex("senhaUser"));
+
+                Toast.makeText(this, userBd +" "+ senhaBd, Toast.LENGTH_SHORT).show();
+
+                if (usuario.equals(userBd) && senha.equals(senhaBd)) {
+                    int ID = cursor.getInt(cursor.getColumnIndex("idUser"));
+                    String CIDADE = cursor.getString(cursor.getColumnIndex("cidadeUser"));
+                    int TIPO = cursor.getInt(cursor.getColumnIndex("tipoUser"));
+                    Double PLAT = cursor.getDouble(cursor.getColumnIndex("latUser"));
+                    Double PLNG = cursor.getDouble(cursor.getColumnIndex("lngUser"));
+
+
+                    BancoDeDadosAdapter c = new BancoDeDadosAdapter();
+                    c.setId_usuario(ID);
+                    c.setUsuario(userBd);
+                    c.setSenha(senhaBd);
+                    c.setCidade(CIDADE);
+                    c.setLat(PLAT);
+                    c.setLng(PLNG);
+                    c.setTipo(TIPO);
+                    bd.insertContact(c);
+                    Toast.makeText(this, "Login realizado com sucesso", Toast.LENGTH_SHORT).show();
+                    conta = 1;
+                    Intent intent = new Intent(Login.this, Main.class);
+                    startActivity(intent);
+
+                }
+            } while (cursor.moveToNext());
+        }
+
+        if (conta == 0) {
+            AlertDialog.Builder dlg = new AlertDialog.Builder(this);
+            dlg.setTitle("Invalid email or password");
+            dlg.setNeutralButton("OK", null);
+            AlertDialog dialog = dlg.create();
+            dialog.show();
+
+        }
     }
 
     @OnClick(R.id.cadastro_button)
@@ -93,3 +114,7 @@ public class Login extends AppCompatActivity {
         startActivity(intent);
     }
 }
+
+
+
+

@@ -125,7 +125,7 @@
         android:layout_height="wrap_content"
         android:text="Confirmar"
         android:id="@+id/button3"
-        android:onClick="CONFIRMAR"
+        android:onClick="CADASTRO"
         android:background="@color/colorAccent"
         android:textColor="#fff"
         android:layout_marginTop="43dp"

@@ -34,7 +34,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/Nome"
+        android:id="@+id/NomeP"
         android:hint="Ex: Maria Aquino"
         android:textSize="15dp"
         android:layout_below="@+id/nomep"
@@ -59,9 +59,9 @@
         android:textSize="17sp"
         android:textColor="#000"
         android:id="@+id/enderecop"
-        android:layout_below="@+id/Nome"
-        android:layout_alignLeft="@+id/Nome"
-        android:layout_alignStart="@+id/Nome" />
+        android:layout_below="@+id/NomeP"
+        android:layout_alignLeft="@+id/NomeP"
+        android:layout_alignStart="@+id/NomeP" />
 
     <TextView
         android:layout_width="wrap_content"

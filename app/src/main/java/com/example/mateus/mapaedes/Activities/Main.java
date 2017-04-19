@@ -1,5 +1,13 @@
 package com.example.mateus.mapaedes.Activities;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,14 +17,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.style.TextAppearanceSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.example.mateus.mapaedes.Adapters.BancoDeDados;
 import com.example.mateus.mapaedes.Fragments.AdicionarCaso;
 import com.example.mateus.mapaedes.Fragments.AdicionarFoco;
 import com.example.mateus.mapaedes.Fragments.Buscar;
@@ -35,14 +47,19 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class
-Main extends AppCompatActivity
+public class  Main extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AdicionarCaso.OnFragmentInteractionListener,
         AdicionarFoco.OnFragmentInteractionListener,
         Buscar.OnFragmentInteractionListener,
@@ -50,8 +67,10 @@ Main extends AppCompatActivity
         Informacoes.OnFragmentInteractionListener,
         Logout.OnFragmentInteractionListener,
         MeusCasosAdicionados.OnFragmentInteractionListener,
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
+        {
 
+    public Double LAT, LNG;
     private String mUser;
     private String[] mUsers;
     private Menu mMenu;
@@ -62,6 +81,8 @@ Main extends AppCompatActivity
     public SupportMapFragment mFragMap = null;
     private static final double CG_LAT = -20.4435,
             CG_LGT = -54.6478;
+    public String tipo;
+    public static LatLng pos;
     @BindView(R.id.content_main)
     RelativeLayout mContentMain;
     @BindView(R.id.nav_view)
@@ -70,6 +91,8 @@ Main extends AppCompatActivity
     DrawerLayout mDrawerLayout;
     @BindView(R.id.main_toolbar)
     Toolbar mToolbar;
+
+    BancoDeDados bd = new BancoDeDados(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +114,9 @@ Main extends AppCompatActivity
 
         buildGoogleApiClient();
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+
+
     }
 
     private void searchData() {
@@ -136,9 +162,17 @@ Main extends AppCompatActivity
         android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         int id = item.getItemId();
 
-        //se for medico, desativa focos
-        if (mUsers[0].equals(mUser)) {
+        SQLiteDatabase banco = bd.getReadableDatabase();
+        Cursor cursor = banco.query("login", null, null, null, null, null, null);
+
+        if (cursor.moveToFirst()){
+            tipo = cursor.getString(cursor.getColumnIndex("tipo"));
+        }
+
+        //CASOS
+        if (tipo.equals("0")) {
             mMenu.findItem(R.id.nav_title_focos).setVisible(false);
+            mMenu.findItem(R.id.nav_title_dois).setVisible(false);
             configuraTitle(mMenu.findItem(R.id.nav_title_casos));
             switch (item.getItemId()) {
                 case R.id.nav_map:
@@ -149,15 +183,18 @@ Main extends AppCompatActivity
                         public void onMapReady(GoogleMap googleMap) {
                             mMap = googleMap;
 
-                            LatLng latlng ;
-                            latlng = new LatLng(CG_LAT, CG_LGT);
-                            final CameraPosition cp = new CameraPosition.Builder().target(latlng)
-                                    .zoom(13).bearing(0).tilt(00).build();
-                            CameraUpdate cam = CameraUpdateFactory.newCameraPosition(cp);
-                            mMap.moveCamera(cam);
-
+                            try {
+                                configuraMapa();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            //gotoLocation(CG_LAT,CG_LGT, DEFAULTZOM);
                         }
+
+
                     });
+
+
                     fm.beginTransaction()
                             .replace(R.id.Conteiner, mFragMap)
                             .addToBackStack("")
@@ -172,7 +209,7 @@ Main extends AppCompatActivity
                     frag = new MeusCasosAdicionados();
                     trocaFrag(fm, frag);
                     break;
-                case R.id.nav_buscarcasos:
+                case R.id.nav_buscar:
                     frag = new Buscar();
                     trocaFrag(fm, frag);
                     break;
@@ -185,21 +222,290 @@ Main extends AppCompatActivity
                     trocaFrag(fm, frag);
                     break;
                 case R.id.nav_logout:
-                    frag = new Logout();
-                    trocaFrag(fm, frag);
+                   sair();
                     break;
             }
-        } else {
+            //FOCO
+        } else if(tipo.equals("1")) {
             mMenu.findItem(R.id.nav_title_casos).setVisible(false);
+            mMenu.findItem(R.id.nav_title_dois).setVisible(false);
             configuraTitle(mMenu.findItem(R.id.nav_title_focos));
+            switch (item.getItemId()) {
+                case R.id.nav_map:
+                    mFragMap = new SupportMapFragment();
+                    mFragMap.getMapAsync(new OnMapReadyCallback() {
+                        @Override
+                        public void onMapReady(GoogleMap googleMap) {
+                            mMap = googleMap;
+
+                            try {
+                                configuraMapa();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            //gotoLocation(CG_LAT,CG_LGT, DEFAULTZOM);
+                        }
+
+
+                    });
+                    fm.beginTransaction()
+                            .replace(R.id.Conteiner, mFragMap)
+                            .addToBackStack("")
+                            .commit();
+
+                    break;
+                case R.id.nav_addfoco:
+                    frag = new AdicionarFoco();
+                    trocaFrag(fm, frag);
+                    break;
+                case R.id.nav_listarfoco:
+                    frag = new MeusCasosAdicionados();
+                    trocaFrag(fm, frag);
+                    break;
+                case R.id.nav_buscar:
+                    frag = new Buscar();
+                    trocaFrag(fm, frag);
+                    break;
+                case R.id.nav_info:
+                    frag = new Informacoes();
+                    trocaFrag(fm, frag);
+                    break;
+                case R.id.nav_settings:
+                    frag = new Configuracoes();
+                    trocaFrag(fm, frag);
+                    break;
+                case R.id.nav_logout:
+                    sair();
+                    break;
+            }
+            //ADM
+        }else {
+            mMenu.findItem(R.id.nav_title_casos).setVisible(false);
+            mMenu.findItem(R.id.nav_title_focos).setVisible(false);
+            configuraTitle(mMenu.findItem(R.id.nav_title_dois));
+            switch (item.getItemId()) {
+                case R.id.nav_map:
+                    mFragMap = new SupportMapFragment();
+                    mFragMap.getMapAsync(new OnMapReadyCallback() {
+                        @Override
+                        public void onMapReady(GoogleMap googleMap) {
+                            mMap = googleMap;
+
+                            try {
+                                configuraMapa();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            //gotoLocation(CG_LAT,CG_LGT, DEFAULTZOM);
+                        }
+
+
+                    });
+                    fm.beginTransaction()
+                            .replace(R.id.Conteiner, mFragMap)
+                            .addToBackStack("")
+                            .commit();
+
+                    break;
+                case R.id.nav_addcasos:
+                    frag = new AdicionarCaso();
+                    trocaFrag(fm, frag);
+                    break;
+                case R.id.nav_addfoco:
+                    frag = new AdicionarFoco();
+                    trocaFrag(fm, frag);
+                    break;
+                case R.id.nav_listarcasos:
+                    frag = new MeusCasosAdicionados();
+                    trocaFrag(fm, frag);
+                    break;
+                case R.id.nav_listarfoco:
+                    frag = new MeusCasosAdicionados();
+                    trocaFrag(fm, frag);
+                    break;
+                case R.id.nav_buscar:
+                    frag = new Buscar();
+                    trocaFrag(fm, frag);
+                    break;
+                case R.id.nav_info:
+                    frag = new Informacoes();
+                    trocaFrag(fm, frag);
+                    break;
+                case R.id.nav_settings:
+                    frag = new Configuracoes();
+                    trocaFrag(fm, frag);
+                    break;
+                case R.id.nav_logout:
+                    sair();
+                    break;
+            }
+
+
         }
-
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    private void configuraMapa() throws IOException {
+        SQLiteDatabase banco = bd.getReadableDatabase();
+        Cursor cursor = banco.query("login", null, null, null, null, null, null);
+        if (cursor.moveToFirst()){
+            do{
+                String USER = cursor.getString(cursor.getColumnIndex("usuario"));
+                 LAT = cursor.getDouble(cursor.getColumnIndex("lat"));
+                 LNG = cursor.getDouble(cursor.getColumnIndex("lng"));
+
+
+            }while (cursor.moveToNext());
+        }
+        final double platt = LAT;
+        final double plngg = LNG;
+
+       LatLng latlngg = new LatLng(CG_LAT, CG_LGT);
+
+
+        final CameraPosition cp = new CameraPosition.Builder().target(latlngg).zoom(13).bearing(0).tilt(00).build();
+        CameraUpdate cam = CameraUpdateFactory.newCameraPosition(cp);
+        mMap.moveCamera(cam);
+
+        Cursor cursore = banco.query("casos", null, null, null, null, null, null);
+
+        while (cursore.moveToNext()) {
+            Log.e("Condiçao", "entrou");
+            String nomeP = cursore.getString(cursore.getColumnIndex("Pnome"));
+            String doencaP = cursore.getString(cursore.getColumnIndex("Pdoenca"));
+            String enderecoP = cursore.getString(cursore.getColumnIndex("Pendereco"));
+            Double latP = cursore.getDouble(cursore.getColumnIndex("Plat"));
+            Double lngP = cursore.getDouble(cursore.getColumnIndex("Plng"));
+
+            final double plat = latP;
+            final double plng = lngP;
+
+            pos= new LatLng(plat, plng);
+
+            switch (doencaP){
+                case "Dengue":
+                    MarkerOptions options = new MarkerOptions()
+                            .title(nomeP + " - Dengue")
+                            .snippet(enderecoP)
+                            .icon(BitmapDescriptorFactory.defaultMarker(
+                                    BitmapDescriptorFactory.HUE_RED))
+
+                            .position(pos);
+
+                    mMap.addMarker(options);
+                    break;
+                case "Zika vírus":
+                    MarkerOptions options1 = new MarkerOptions()
+                            .title(nomeP + " - Zika vírus")
+                            .snippet(enderecoP)
+                            .icon(BitmapDescriptorFactory.defaultMarker(
+                                    BitmapDescriptorFactory.HUE_GREEN))
+
+                            .position(pos);
+
+                    mMap.addMarker(options1);
+                    break;
+                case "Chikungunya":
+                    MarkerOptions options2 = new MarkerOptions()
+                            .title(nomeP + " - Chicungunya")
+                            .snippet(enderecoP)
+                            .icon(BitmapDescriptorFactory.defaultMarker(
+                                    BitmapDescriptorFactory.HUE_AZURE))
+                            .position(pos);
+
+                    mMap.addMarker(options2);
+                    break;
+                case "Nyongnyong":
+                    MarkerOptions options3 = new MarkerOptions()
+                            .title(nomeP + " - Nyongnyong")
+                            .snippet(enderecoP)
+                            .icon(BitmapDescriptorFactory.defaultMarker(
+                                    BitmapDescriptorFactory.HUE_ORANGE))
+                            .position(pos);
+
+                    mMap.addMarker(options3);
+                    break;
+                case "Guillaint barré":
+                    MarkerOptions options4 = new MarkerOptions()
+                            .title(nomeP + " - Guillaint barré")
+                            .snippet(enderecoP)
+                            .icon(BitmapDescriptorFactory.defaultMarker(
+                                    BitmapDescriptorFactory.HUE_YELLOW))
+                            .position(pos);
+
+                    mMap.addMarker(options4);
+                    break;
+                case "Foco":
+                      /* MarkerOptions options = new MarkerOptions()
+                        .title("Foco")
+                        .snippet(enderecoP)
+                        .icon(BitmapDescriptorFactory.defaultMarker(
+                                BitmapDescriptorFactory.HU))
+                        .position(pos);
+
+                mMap.addMarker(options);*/
+                    drawCircle(pos);
+                    break;
+
+            }
+        }
+    }
+
+
+    public static void drawCircle(LatLng point) {
+
+        // Instantiating CircleOptions to draw a circle around the marker
+        CircleOptions circleOptions = new CircleOptions();
+
+        // Specifying the center of the circle
+        circleOptions.center(point);
+
+        // Radius of the circle
+        circleOptions.radius(500);
+
+        // Border color of the circle
+        circleOptions.strokeColor(Color.BLACK);
+
+        // Fill color of the circle
+        circleOptions.fillColor(0x550000);
+
+        // Border width of the circle
+        circleOptions.strokeWidth(2);
+
+        // Adding the circle to the GoogleMap
+        mMap.addCircle(circleOptions);
+
+    }
+
+    private void sair() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Logout");
+        alertDialog.setMessage("Caso saia, você será deslogado de sua conta");
+        alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                SQLiteDatabase banco = bd.getReadableDatabase();
+
+                banco.execSQL("DELETE FROM login"); //delete all rows in a table
+                Intent myIntent = new Intent(((Dialog) dialog).getContext(), Login.class);
+                myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(myIntent);
+
+                return;
+            }
+        });
+        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent myIntent = new Intent(((Dialog) dialog).getContext(), Main.class);
+                myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(myIntent);
+
+            } });
+
+        alertDialog.show();
+    }
+
     private void trocaFrag(FragmentManager fragmentManager, Fragment fragment) {
         fragmentManager.beginTransaction()
                 .replace(R.id.Conteiner, fragment)
@@ -213,35 +519,65 @@ Main extends AppCompatActivity
         tools.setTitle(s);
     }
 
-    public GoogleApiClient getmGoogleApiClient() {
-        if (mGoogleApiClient == null) {
-            buildGoogleApiClient();
+
+            @Override
+            public void onConnected(@Nullable Bundle bundle) {
+
+            }
+
+            @Override
+            public void onConnectionSuspended(int i) {
+
+            }
+
+            @Override
+            public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+            }
+            public GoogleApiClient getmGoogleApiClient() {
+                if (mGoogleApiClient == null) {
+                    buildGoogleApiClient();
+                }
+                return mGoogleApiClient;
+            }
+
+            protected synchronized void buildGoogleApiClient() {
+                mGoogleApiClient = new GoogleApiClient.Builder(this)
+                        .addConnectionCallbacks(this)
+                        .addOnConnectionFailedListener(this)
+                        .addApi(LocationServices.API)
+                        .enableAutoManage(this, 0 /* clientId */, this)
+                        .addApi(Places.GEO_DATA_API)
+                        .build();
+            }
+
+            public void PinarMapa(){
+                try {
+                    String NOME = AdicionarCaso.nomeE.getText().toString();
+                    String PENDERECO = AdicionarCaso.Endereço.getText().toString();
+                    String DOENCA = (String) AdicionarCaso.spinner.getSelectedItem();
+                    Geocoder gcc = new Geocoder(this);
+                    List<Address> list = gcc.getFromLocationName(PENDERECO, 1);
+                    Address add = list.get(0);
+                    String locality = add.getLocality();
+
+                    final double latt = add.getLatitude();
+
+                    final double lngg = add.getLongitude();
+
+
+                    SQLiteDatabase banco = bd.getReadableDatabase();
+                    Cursor cursor = banco.query("login", null, null, null, null, null, null);
+                    if (cursor.moveToFirst()){
+                        do{
+                            String USER = cursor.getString(cursor.getColumnIndex("usuario"));
+
+
+                        }while (cursor.moveToNext());
+                    }
+
+                } catch (IOException e) {
+                    Toast.makeText(this, " O caso não pode ser registrado. Conecte-se a internet, e tente novamente.", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
-        return mGoogleApiClient;
-    }
-
-    protected synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .enableAutoManage(this, 0 /* clientId */, this)
-                .addApi(Places.GEO_DATA_API)
-                .build();
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-}

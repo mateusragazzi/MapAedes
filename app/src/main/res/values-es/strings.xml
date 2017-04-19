@@ -5,7 +5,7 @@
     <string name="action_settings">Ajustes</string>
 
     <string name="mapa">Mapa</string>
-    <string name="add_casos">Añadir</string>
+    <string name="add_casos">Añadir Casos</string>
     <string name="casos_adicionados">Casos Añadidos</string>
     <string name="procurar_casos">Casos</string>
     <string name="add_focos">Añadir</string>
@@ -21,27 +21,39 @@
     <string name="registrar_caso">Registro de casos</string>
     <string name="title_foco">Focos</string>
     <string name="title_casos">Casos</string>
-    <string name="nomeUsuario">Nome de Usuário</string>
+    <string name="nome_usuario">Nome de Usuário</string>
     <string name="senha">Contraseña</string>
     <string name="cidade">Ciudad</string>
     <string name="pessoa">Persona</string>
     <string name="criar_conta">No tienes una cuenta?</string>
     <string name="confirmar">Confirmar</string>
     <string name="cadastro">Registrar</string>
-
+    <string name="sairFrag">Que quiere dejar?</string>
+    <string name="sairFragCond">Si te vas, se cerrará la sesión de su cuenta</string>
+    <string name="Rsenha">Senha</string>
+    <string name="Login">Login</string>
+    <string name="registre_se">Registre-se</string>
+    <string name="dengue">Dengue</string>
+    <string name="zika_virus">Zika vírus</string>
+    <string name="chikungunya">Chikungunya</string>
+    <string name="nyongnyong">Nyongnyong</string>
+    <string name="guillaint_barre">Guillaint barré</string>
+    <string name="mmarcadores">Marcadores</string>
+    <string name="nav_title_dois">Casos y Focos</string>
+    <string name="buscar">Buscar</string>
 
     <string-array name="doencas">
         <item>Dengue</item>
         <item>Zika vírus</item>
         <item>Chikungunya</item>
         <item>Nyongnyong</item>
-        <item>Guillaint barré</item>
+        <item>Guillain barré</item>
     </string-array>
 
     <string-array name="pessoas">
-        <item>agente de la salud</item>
         <item>Médico</item>
-        <item>Población</item>
+        <item>agente de la salud</item>
+        <item>Administrador</item>
     </string-array>
 
 </resources>

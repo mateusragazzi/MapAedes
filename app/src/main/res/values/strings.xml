@@ -8,7 +8,7 @@
     <string name="action_settings">Configurações</string>
 
     <string name="mapa">Mapa</string>
-    <string name="add_casos">Adicionar</string>
+    <string name="add_casos">Adicionar Casos</string>
     <string name="casos_adicionados">Listar Adicionados</string>
     <string name="procurar_casos">Procurar</string>
     <string name="add_focos">Adicionar Focos</string>
@@ -32,7 +32,19 @@
     <string name="criar_conta">Não possui uma conta?</string>
     <string name="confirmar">Confirmar</string>
     <string name="cadastro">Cadastre-se</string>
-
+    <string name="sairFrag">Deseja sair?</string>
+    <string name="sairFragCond">Caso saia, você será deslogado de sua conta</string>
+    <string name="Rsenha">Senha</string>
+    <string name="Login">Login</string>
+    <string name="registre_se">Registre-se</string>
+    <string name="dengue">Dengue</string>
+    <string name="zika_virus">Zika vírus</string>
+    <string name="chikungunya">Chikungunya</string>
+    <string name="nyongnyong">Nyongnyong</string>
+    <string name="guillaint_barre">Guillaint barré</string>
+    <string name="mmarcadores">Marcadores</string>
+    <string name="nav_title_dois">Casos e Focos</string>
+    <string name="buscar">Buscar</string>
 
     <string-array name="users">
         <item>Médico</item>
@@ -44,13 +56,13 @@
         <item>Zika vírus</item>
         <item>Chikungunya</item>
         <item>Nyongnyong</item>
-        <item>Guillaint barré</item>
+        <item>Guillain barré</item>
     </string-array>
 
     <string-array name="pessoas">
-        <item>Agente de saúde</item>
         <item>Médico</item>
-        <item>População</item>
+        <item>Agente de saúde</item>
+        <item>Administrador</item>
     </string-array>
 
 </resources>

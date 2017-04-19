@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
         <item
@@ -20,11 +21,31 @@
                         android:id="@+id/nav_listarfoco"
                         android:icon="@drawable/ic_menu_list"
                         android:title="@string/focos_adicionados"/>
+                </group>
+            </menu>
+        </item>
+        <item
+            android:id="@+id/nav_title_dois"
+            android:title="@string/nav_title_dois">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_addcasos1"
+                        android:icon="@drawable/ic_menu_add"
+                        android:title="@string/add_casos"/>
+                    <item
+                        android:id="@+id/nav_addfocos1"
+                        android:icon="@drawable/ic_menu_add"
+                        android:title="@string/add_focos"/>
 
                     <item
-                        android:id="@+id/nav_buscarfoco"
-                        android:icon="@drawable/ic_menu_search"
-                        android:title="@string/procurar_focos"/>
+                        android:id="@+id/nav_listarcasos1"
+                        android:icon="@drawable/ic_menu_list"
+                        android:title="@string/casos_adicionados"/>
+                    <item
+                        android:id="@+id/nav_listarfocos1"
+                        android:icon="@drawable/ic_menu_list"
+                        android:title="@string/focos_adicionados"/>
                 </group>
             </menu>
         </item>
@@ -43,14 +64,14 @@
                         android:icon="@drawable/ic_menu_list"
                         android:title="@string/casos_adicionados"/>
 
-                    <item
-                        android:id="@+id/nav_buscarcasos"
-                        android:icon="@drawable/ic_menu_search"
-                        android:title="@string/procurar_casos"/>
                 </group>
             </menu>
         </item>
 
+        <item
+            android:id="@+id/nav_buscar"
+            android:icon="@drawable/ic_menu_search"
+            android:title="@string/buscar"/>
         <item
             android:id="@+id/nav_info"
             android:icon="@drawable/ic_menu_info"
