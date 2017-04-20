@@ -376,13 +376,12 @@ public class  Main extends AppCompatActivity
         Cursor cursore = bancoo.query("casos", null, null, null, null, null, null);
             while (cursore.moveToNext()) {
                 Log.e("Condiçao", "entrou");
-                String nomeP = cursore.getString(cursore.getColumnIndex("Pnome"));
-                String doencaP = cursore.getString(cursore.getColumnIndex("Pdoenca"));
-                String enderecoP = cursore.getString(cursore.getColumnIndex("Pendereco"));
-                Double latP = cursore.getDouble(cursore.getColumnIndex("Plat"));
-                Double lngP = cursore.getDouble(cursore.getColumnIndex("Plng"));
+                String nomeP = cursore.getString(cursore.getColumnIndex("nomePessoaDoenca"));
+                String doencaP = cursore.getString(cursore.getColumnIndex("tipoDoenca"));
+                String enderecoP = cursore.getString(cursore.getColumnIndex("enderecoDoenca"));
+                Double latP = cursore.getDouble(cursore.getColumnIndex("latDoenca"));
+                Double lngP = cursore.getDouble(cursore.getColumnIndex("lngDoenca"));
 
-                Toast.makeText(this, "depois", Toast.LENGTH_SHORT).show();
 
                 final double plat = latP;
                 final double plng = lngP;

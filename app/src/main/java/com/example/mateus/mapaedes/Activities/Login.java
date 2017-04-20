@@ -58,6 +58,7 @@ public class Login extends AppCompatActivity {
         }
 
     public void LOGIN(View view) {
+
         int conta = 0;
         String usuario = mLoginUser.getText().toString();
         String senha = mLoginPswd.getText().toString();

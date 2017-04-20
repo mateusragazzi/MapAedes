@@ -53,7 +53,7 @@ public class BancoDeDados extends SQLiteOpenHelper {
     public static final String COL_LATD = "latDoenca";
     public static final String COL_LNGD = "lngDoenca";
 
-    private static  final String TABLE_CASOS = "create table casos ( idDoenca integer primary key  ,  "+" id_usuarioDoenca int, tipoDoenca TEXT ,  nomePessoaDoenca TEXT , enderecoDoenca TEXT, latDoenca REAL, lngDoenca REAL);";
+    private static  final String TABLE_CASOS = "create table casos ( idDoenca integer primary key  ,  "+" id_usuarioDoenca int, tipoDoenca TEXT ,  nomePessoaDoenca TEXT , enderecoDoenca TEXT,dataDoenca TEXT, latDoenca REAL, lngDoenca REAL);";
 
 
     public BancoDeDados(Context context) {
@@ -135,14 +135,14 @@ public class BancoDeDados extends SQLiteOpenHelper {
         values.put(COL_IDD, count);
         values.put(COL_IDUSERD, c.getId_usuarioDoenca());
         values.put(COL_TIPOD, c.getTipoDoenca());
-        values.put(COL_TIPOD, c.getNomePessoaDoenca());
+        values.put(COL_NOMED, c.getNomePessoaDoenca());
         values.put(COL_ENDERECOD, c.getEnderecoDoenca());
         values.put(COL_DATA, c.getDataDoenca());
         values.put(COL_LATD, c.getLatDoenca());
         values.put(COL_LNGD, c.getLngDoenca());
         bd.insert(TABLE_NAME3, null, values);
 
-
+        Log.e("BD casos", "Criou uma coluna");
     }
 }
 
