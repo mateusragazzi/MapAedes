@@ -55,6 +55,7 @@ public class BancoDeDadosAdapter {
     public void setTipoDoenca(String tipoDoenca) {
         this.tipoDoenca = tipoDoenca;
     }
+
     public void setUsuarioDoenca(String usuarioDoenca) {
         this.usuarioDoenca = usuarioDoenca;
     }

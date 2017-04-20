@@ -1,7 +1,10 @@
 package com.example.mateus.mapaedes.Fragments;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +13,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
-import com.example.mateus.mapaedes.Activities.Main;
+import com.example.mateus.mapaedes.Adapters.BancoDeDados;
 import com.example.mateus.mapaedes.Adapters.PlaceAutocompleteAdapter;
 import com.example.mateus.mapaedes.R;
 import com.google.android.gms.maps.model.LatLng;
@@ -56,12 +60,24 @@ public class AdicionarCaso extends Fragment {
 
         Endereço.setOnClickListener(mAutocompleteClickListener);
 
-        Main act = (Main) getActivity();
-        mAdapter = new PlaceAutocompleteAdapter(act, android.R.layout.simple_list_item_1,
-                act.getmGoogleApiClient(), BOUNS_CAMPO_GRANDE, null);
-        Endereço.setAdapter(mAdapter);
-        PEndereço = Endereço.getText().toString();
 
+        BancoDeDados helper = new BancoDeDados(getActivity());
+        SQLiteDatabase bancoo = helper.getReadableDatabase();
+        Cursor cursor = bancoo.query("casos", null, null, null, null, null, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Log.e("Condiçao", "entrou");
+                String nomeP = cursor.getString(cursor.getColumnIndex("Pnome"));
+                String doencaP = cursor.getString(cursor.getColumnIndex("Pdoenca"));
+                String enderecoP = cursor.getString(cursor.getColumnIndex("Pendereco"));
+                Double latP = cursor.getDouble(cursor.getColumnIndex("Plat"));
+                Double lngP = cursor.getDouble(cursor.getColumnIndex("Plng"));
+
+                Toast.makeText(getActivity(), nomeP, Toast.LENGTH_SHORT).show();
+
+
+            }while (cursor.moveToNext());
+        }
 
         return v;
     }

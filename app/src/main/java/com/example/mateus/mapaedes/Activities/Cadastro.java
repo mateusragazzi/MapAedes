@@ -20,6 +20,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.widget.Toast.makeText;
+
 /**
  * Created by zazah on 14/02/2017.
  */
@@ -62,37 +64,39 @@ public class Cadastro extends AppCompatActivity {
         Pessoas = pessoas.getSelectedItemPosition();
 
 
-            //Adapter -- Pegando lat e lng da Cidade
-            Geocoder gcc = new Geocoder(this);
-            List<Address> list = gcc.getFromLocationName(Cidade, 1);
-            Address add = list.get(0);
-            String locality = add.getLocality();
-            Toast.makeText(this, locality, Toast.LENGTH_LONG).show();
+        //Adapter -- Pegando lat e lng da Cidade
+        Geocoder gcc = new Geocoder(this);
+        List<Address> list = gcc.getFromLocationName(Cidade, 1);
+        Address add = list.get(0);
+        String locality = add.getLocality();
+        makeText(this, locality, Toast.LENGTH_LONG).show();
 
-            final double lat = add.getLatitude();
+        final double lat = add.getLatitude();
 
-            final double lng = add.getLongitude();
+        final double lng = add.getLongitude();
 
 
-            //Colocando no BD
-            BancoDeDadosAdapter c = new BancoDeDadosAdapter();
-            c.setUserUser(Usuario);
-            c.setCidadeUser(Cidade);
-            c.setNomeUser(Nome);
-            c.setSenhaUser(Senha);
-             c.setTipoUser(Pessoas);
-            c.setLatUser(lat);
-            c.setLngUser(lng);
+        //Colocando no BD
+        BancoDeDadosAdapter c = new BancoDeDadosAdapter();
+        c.setUserUser(Usuario);
+        c.setCidadeUser(Cidade);
+        c.setNomeUser(Nome);
+        c.setSenhaUser(Senha);
+        c.setTipoUser(Pessoas);
+        c.setLatUser(lat);
+        c.setLngUser(lng);
 
-            helper.insertContactt(c);
+        helper.insertContactt(c);
 
-            Toast.makeText(this, "Registered with success!", Toast.LENGTH_SHORT).show();
+        makeText(this, "Registered with success!", Toast.LENGTH_SHORT).show();
 
-            Intent intent = new Intent(this, Login.class);
-            startActivity(intent);
+        Intent intent = new Intent(Cadastro.this, Login.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+
         }
 
-
-
     }
+
+
 

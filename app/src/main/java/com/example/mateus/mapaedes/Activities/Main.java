@@ -25,10 +25,12 @@ import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.mateus.mapaedes.Adapters.BancoDeDados;
+import com.example.mateus.mapaedes.Adapters.BancoDeDadosAdapter;
 import com.example.mateus.mapaedes.Fragments.AdicionarCaso;
 import com.example.mateus.mapaedes.Fragments.AdicionarFoco;
 import com.example.mateus.mapaedes.Fragments.Buscar;
@@ -350,94 +352,97 @@ public class  Main extends AppCompatActivity
     private void configuraMapa() throws IOException {
         SQLiteDatabase banco = bd.getReadableDatabase();
         Cursor cursor = banco.query("login", null, null, null, null, null, null);
-        if (cursor.moveToFirst()){
-            do{
+        if (cursor.moveToFirst()) {
+            do {
                 String USER = cursor.getString(cursor.getColumnIndex("usuario"));
-                 LAT = cursor.getDouble(cursor.getColumnIndex("lat"));
-                 LNG = cursor.getDouble(cursor.getColumnIndex("lng"));
+                LAT = cursor.getDouble(cursor.getColumnIndex("lat"));
+                LNG = cursor.getDouble(cursor.getColumnIndex("lng"));
 
 
-            }while (cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         final double platt = LAT;
         final double plngg = LNG;
 
-       LatLng latlngg = new LatLng(CG_LAT, CG_LGT);
+        LatLng latlngg = new LatLng(platt, plngg);
 
 
         final CameraPosition cp = new CameraPosition.Builder().target(latlngg).zoom(13).bearing(0).tilt(00).build();
         CameraUpdate cam = CameraUpdateFactory.newCameraPosition(cp);
         mMap.moveCamera(cam);
 
-        Cursor cursore = banco.query("casos", null, null, null, null, null, null);
 
-        while (cursore.moveToNext()) {
-            Log.e("Condiçao", "entrou");
-            String nomeP = cursore.getString(cursore.getColumnIndex("Pnome"));
-            String doencaP = cursore.getString(cursore.getColumnIndex("Pdoenca"));
-            String enderecoP = cursore.getString(cursore.getColumnIndex("Pendereco"));
-            Double latP = cursore.getDouble(cursore.getColumnIndex("Plat"));
-            Double lngP = cursore.getDouble(cursore.getColumnIndex("Plng"));
+        SQLiteDatabase bancoo = bd.getReadableDatabase();
+        Cursor cursore = bancoo.query("casos", null, null, null, null, null, null);
+            while (cursore.moveToNext()) {
+                Log.e("Condiçao", "entrou");
+                String nomeP = cursore.getString(cursore.getColumnIndex("Pnome"));
+                String doencaP = cursore.getString(cursore.getColumnIndex("Pdoenca"));
+                String enderecoP = cursore.getString(cursore.getColumnIndex("Pendereco"));
+                Double latP = cursore.getDouble(cursore.getColumnIndex("Plat"));
+                Double lngP = cursore.getDouble(cursore.getColumnIndex("Plng"));
 
-            final double plat = latP;
-            final double plng = lngP;
+                Toast.makeText(this, "depois", Toast.LENGTH_SHORT).show();
 
-            pos= new LatLng(plat, plng);
+                final double plat = latP;
+                final double plng = lngP;
 
-            switch (doencaP){
-                case "Dengue":
-                    MarkerOptions options = new MarkerOptions()
-                            .title(nomeP + " - Dengue")
-                            .snippet(enderecoP)
-                            .icon(BitmapDescriptorFactory.defaultMarker(
-                                    BitmapDescriptorFactory.HUE_RED))
+                pos = new LatLng(plat, plng);
 
-                            .position(pos);
+                switch (doencaP) {
+                    case "Dengue":
+                        MarkerOptions options = new MarkerOptions()
+                                .title(nomeP + " - Dengue")
+                                .snippet(enderecoP)
+                                .icon(BitmapDescriptorFactory.defaultMarker(
+                                        BitmapDescriptorFactory.HUE_RED))
 
-                    mMap.addMarker(options);
-                    break;
-                case "Zika vírus":
-                    MarkerOptions options1 = new MarkerOptions()
-                            .title(nomeP + " - Zika vírus")
-                            .snippet(enderecoP)
-                            .icon(BitmapDescriptorFactory.defaultMarker(
-                                    BitmapDescriptorFactory.HUE_GREEN))
+                                .position(pos);
 
-                            .position(pos);
+                        mMap.addMarker(options);
+                        break;
+                    case "Zika vírus":
+                        MarkerOptions options1 = new MarkerOptions()
+                                .title(nomeP + " - Zika vírus")
+                                .snippet(enderecoP)
+                                .icon(BitmapDescriptorFactory.defaultMarker(
+                                        BitmapDescriptorFactory.HUE_GREEN))
 
-                    mMap.addMarker(options1);
-                    break;
-                case "Chikungunya":
-                    MarkerOptions options2 = new MarkerOptions()
-                            .title(nomeP + " - Chicungunya")
-                            .snippet(enderecoP)
-                            .icon(BitmapDescriptorFactory.defaultMarker(
-                                    BitmapDescriptorFactory.HUE_AZURE))
-                            .position(pos);
+                                .position(pos);
 
-                    mMap.addMarker(options2);
-                    break;
-                case "Nyongnyong":
-                    MarkerOptions options3 = new MarkerOptions()
-                            .title(nomeP + " - Nyongnyong")
-                            .snippet(enderecoP)
-                            .icon(BitmapDescriptorFactory.defaultMarker(
-                                    BitmapDescriptorFactory.HUE_ORANGE))
-                            .position(pos);
+                        mMap.addMarker(options1);
+                        break;
+                    case "Chikungunya":
+                        MarkerOptions options2 = new MarkerOptions()
+                                .title(nomeP + " - Chicungunya")
+                                .snippet(enderecoP)
+                                .icon(BitmapDescriptorFactory.defaultMarker(
+                                        BitmapDescriptorFactory.HUE_AZURE))
+                                .position(pos);
 
-                    mMap.addMarker(options3);
-                    break;
-                case "Guillaint barré":
-                    MarkerOptions options4 = new MarkerOptions()
-                            .title(nomeP + " - Guillaint barré")
-                            .snippet(enderecoP)
-                            .icon(BitmapDescriptorFactory.defaultMarker(
-                                    BitmapDescriptorFactory.HUE_YELLOW))
-                            .position(pos);
+                        mMap.addMarker(options2);
+                        break;
+                    case "Nyongnyong":
+                        MarkerOptions options3 = new MarkerOptions()
+                                .title(nomeP + " - Nyongnyong")
+                                .snippet(enderecoP)
+                                .icon(BitmapDescriptorFactory.defaultMarker(
+                                        BitmapDescriptorFactory.HUE_ORANGE))
+                                .position(pos);
 
-                    mMap.addMarker(options4);
-                    break;
-                case "Foco":
+                        mMap.addMarker(options3);
+                        break;
+                    case "Guillaint barré":
+                        MarkerOptions options4 = new MarkerOptions()
+                                .title(nomeP + " - Guillaint barré")
+                                .snippet(enderecoP)
+                                .icon(BitmapDescriptorFactory.defaultMarker(
+                                        BitmapDescriptorFactory.HUE_YELLOW))
+                                .position(pos);
+
+                        mMap.addMarker(options4);
+                        break;
+                    case "Foco":
                       /* MarkerOptions options = new MarkerOptions()
                         .title("Foco")
                         .snippet(enderecoP)
@@ -446,12 +451,13 @@ public class  Main extends AppCompatActivity
                         .position(pos);
 
                 mMap.addMarker(options);*/
-                    drawCircle(pos);
-                    break;
+                        drawCircle(pos);
+                        break;
 
+                }
             }
         }
-    }
+
 
 
     public static void drawCircle(LatLng point) {
@@ -551,8 +557,9 @@ public class  Main extends AppCompatActivity
                         .build();
             }
 
-            public void PinarMapa(){
+            public void PinarMapa(View v) throws IOException{
                 try {
+                    String data = "18/04/17";
                     String NOME = AdicionarCaso.nomeE.getText().toString();
                     String PENDERECO = AdicionarCaso.Endereço.getText().toString();
                     String DOENCA = (String) AdicionarCaso.spinner.getSelectedItem();
@@ -568,16 +575,28 @@ public class  Main extends AppCompatActivity
 
                     SQLiteDatabase banco = bd.getReadableDatabase();
                     Cursor cursor = banco.query("login", null, null, null, null, null, null);
+                    int id = 0;
                     if (cursor.moveToFirst()){
                         do{
-                            String USER = cursor.getString(cursor.getColumnIndex("usuario"));
-
-
+                             id =  cursor.getInt(cursor.getColumnIndex("id_usuario"));
                         }while (cursor.moveToNext());
                     }
 
+                    BancoDeDadosAdapter c = new BancoDeDadosAdapter();
+
+                    c.setId_usuarioDoenca(id);
+                    c.setTipoDoenca(DOENCA);
+                    c.setNomePessoaDoenca(NOME);
+                    c.setDataDoenca(data);
+                    c.setLatDoenca(latt);
+                    c.setLngDoenca(lngg);
+                    c.setEnderecoDoenca(PENDERECO);
+
+                    bd.insertContacttt(c);
+                    Toast.makeText(this, id + DOENCA+ NOME+ latt+lngg, Toast.LENGTH_SHORT).show();
                 } catch (IOException e) {
                     Toast.makeText(this, " O caso não pode ser registrado. Conecte-se a internet, e tente novamente.", Toast.LENGTH_SHORT).show();
                 }
             }
-        }
+}
+
