@@ -5,6 +5,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -37,6 +38,8 @@ public class Cadastro extends AppCompatActivity {
     EditText cidade;
     @BindView(R.id.spinner2)
     Spinner pessoas;
+    @BindView(R.id.cadastro_toolbar)
+    Toolbar mToolbar;
 
     String Nome;
     String Usuario;
@@ -52,9 +55,17 @@ public class Cadastro extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cadastro);
         ButterKnife.bind(this);
-
+        setupToolbar();
 
     }
+
+    public void setupToolbar(){
+        mToolbar.setTitle(R.string.cadastrar);
+        setSupportActionBar(mToolbar);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setSupportActionBar(mToolbar);
+    }
+
 
     public void CADASTRO(View view) throws IOException {
         Nome = nome.getText().toString();

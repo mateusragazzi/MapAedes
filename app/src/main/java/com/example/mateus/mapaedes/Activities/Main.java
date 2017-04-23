@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -38,6 +39,10 @@ import com.example.mateus.mapaedes.Fragments.Configuracoes;
 import com.example.mateus.mapaedes.Fragments.Informacoes;
 import com.example.mateus.mapaedes.Fragments.Logout;
 import com.example.mateus.mapaedes.Fragments.MeusCasosAdicionados;
+import com.example.mateus.mapaedes.Fragments.SearchGraph;
+import com.example.mateus.mapaedes.Fragments.SearchList;
+import com.example.mateus.mapaedes.Fragments.SearchMap;
+import com.example.mateus.mapaedes.Fragments.TabResultados;
 import com.example.mateus.mapaedes.R;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.ConnectionResult;
@@ -61,16 +66,15 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class  Main extends AppCompatActivity
+public class Main extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AdicionarCaso.OnFragmentInteractionListener,
-        AdicionarFoco.OnFragmentInteractionListener,
-        Buscar.OnFragmentInteractionListener,
-        Configuracoes.OnFragmentInteractionListener,
+        AdicionarFoco.OnFragmentInteractionListener, SearchList.OnFragmentInteractionListener,
+        TabResultados.OnFragmentInteractionListener, SearchGraph.OnFragmentInteractionListener,
+        Configuracoes.OnFragmentInteractionListener, SearchMap.OnFragmentInteractionListener,
         Informacoes.OnFragmentInteractionListener,
         Logout.OnFragmentInteractionListener,
         MeusCasosAdicionados.OnFragmentInteractionListener,
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
-        {
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     public Double LAT, LNG;
     private String mUser;
@@ -116,7 +120,6 @@ public class  Main extends AppCompatActivity
 
         buildGoogleApiClient();
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-
 
 
     }
@@ -167,7 +170,7 @@ public class  Main extends AppCompatActivity
         SQLiteDatabase banco = bd.getReadableDatabase();
         Cursor cursor = banco.query("login", null, null, null, null, null, null);
 
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             tipo = cursor.getString(cursor.getColumnIndex("tipo"));
         }
 
@@ -224,11 +227,11 @@ public class  Main extends AppCompatActivity
                     trocaFrag(fm, frag);
                     break;
                 case R.id.nav_logout:
-                   sair();
+                    sair();
                     break;
             }
             //FOCO
-        } else if(tipo.equals("1")) {
+        } else if (tipo.equals("1")) {
             mMenu.findItem(R.id.nav_title_casos).setVisible(false);
             mMenu.findItem(R.id.nav_title_dois).setVisible(false);
             configuraTitle(mMenu.findItem(R.id.nav_title_focos));
@@ -281,7 +284,7 @@ public class  Main extends AppCompatActivity
                     break;
             }
             //ADM
-        }else {
+        } else {
             mMenu.findItem(R.id.nav_title_casos).setVisible(false);
             mMenu.findItem(R.id.nav_title_focos).setVisible(false);
             configuraTitle(mMenu.findItem(R.id.nav_title_dois));
@@ -326,7 +329,7 @@ public class  Main extends AppCompatActivity
                     trocaFrag(fm, frag);
                     break;
                 case R.id.nav_buscar:
-                    frag = new Buscar();
+                    frag = new TabResultados();
                     trocaFrag(fm, frag);
                     break;
                 case R.id.nav_info:
@@ -374,75 +377,75 @@ public class  Main extends AppCompatActivity
 
         SQLiteDatabase bancoo = bd.getReadableDatabase();
         Cursor cursore = bancoo.query("casos", null, null, null, null, null, null);
-            while (cursore.moveToNext()) {
-                Log.e("Condiçao", "entrou");
-                String nomeP = cursore.getString(cursore.getColumnIndex("Pnome"));
-                String doencaP = cursore.getString(cursore.getColumnIndex("Pdoenca"));
-                String enderecoP = cursore.getString(cursore.getColumnIndex("Pendereco"));
-                Double latP = cursore.getDouble(cursore.getColumnIndex("Plat"));
-                Double lngP = cursore.getDouble(cursore.getColumnIndex("Plng"));
+        while (cursore.moveToNext()) {
+            Log.e("Condiçao", "entrou");
+            String nomeP = cursore.getString(cursore.getColumnIndex("Pnome"));
+            String doencaP = cursore.getString(cursore.getColumnIndex("Pdoenca"));
+            String enderecoP = cursore.getString(cursore.getColumnIndex("Pendereco"));
+            Double latP = cursore.getDouble(cursore.getColumnIndex("Plat"));
+            Double lngP = cursore.getDouble(cursore.getColumnIndex("Plng"));
 
-                Toast.makeText(this, "depois", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "depois", Toast.LENGTH_SHORT).show();
 
-                final double plat = latP;
-                final double plng = lngP;
+            final double plat = latP;
+            final double plng = lngP;
 
-                pos = new LatLng(plat, plng);
+            pos = new LatLng(plat, plng);
 
-                switch (doencaP) {
-                    case "Dengue":
-                        MarkerOptions options = new MarkerOptions()
-                                .title(nomeP + " - Dengue")
-                                .snippet(enderecoP)
-                                .icon(BitmapDescriptorFactory.defaultMarker(
-                                        BitmapDescriptorFactory.HUE_RED))
+            switch (doencaP) {
+                case "Dengue":
+                    MarkerOptions options = new MarkerOptions()
+                            .title(nomeP + " - Dengue")
+                            .snippet(enderecoP)
+                            .icon(BitmapDescriptorFactory.defaultMarker(
+                                    BitmapDescriptorFactory.HUE_RED))
 
-                                .position(pos);
+                            .position(pos);
 
-                        mMap.addMarker(options);
-                        break;
-                    case "Zika vírus":
-                        MarkerOptions options1 = new MarkerOptions()
-                                .title(nomeP + " - Zika vírus")
-                                .snippet(enderecoP)
-                                .icon(BitmapDescriptorFactory.defaultMarker(
-                                        BitmapDescriptorFactory.HUE_GREEN))
+                    mMap.addMarker(options);
+                    break;
+                case "Zika vírus":
+                    MarkerOptions options1 = new MarkerOptions()
+                            .title(nomeP + " - Zika vírus")
+                            .snippet(enderecoP)
+                            .icon(BitmapDescriptorFactory.defaultMarker(
+                                    BitmapDescriptorFactory.HUE_GREEN))
 
-                                .position(pos);
+                            .position(pos);
 
-                        mMap.addMarker(options1);
-                        break;
-                    case "Chikungunya":
-                        MarkerOptions options2 = new MarkerOptions()
-                                .title(nomeP + " - Chicungunya")
-                                .snippet(enderecoP)
-                                .icon(BitmapDescriptorFactory.defaultMarker(
-                                        BitmapDescriptorFactory.HUE_AZURE))
-                                .position(pos);
+                    mMap.addMarker(options1);
+                    break;
+                case "Chikungunya":
+                    MarkerOptions options2 = new MarkerOptions()
+                            .title(nomeP + " - Chicungunya")
+                            .snippet(enderecoP)
+                            .icon(BitmapDescriptorFactory.defaultMarker(
+                                    BitmapDescriptorFactory.HUE_AZURE))
+                            .position(pos);
 
-                        mMap.addMarker(options2);
-                        break;
-                    case "Nyongnyong":
-                        MarkerOptions options3 = new MarkerOptions()
-                                .title(nomeP + " - Nyongnyong")
-                                .snippet(enderecoP)
-                                .icon(BitmapDescriptorFactory.defaultMarker(
-                                        BitmapDescriptorFactory.HUE_ORANGE))
-                                .position(pos);
+                    mMap.addMarker(options2);
+                    break;
+                case "Nyongnyong":
+                    MarkerOptions options3 = new MarkerOptions()
+                            .title(nomeP + " - Nyongnyong")
+                            .snippet(enderecoP)
+                            .icon(BitmapDescriptorFactory.defaultMarker(
+                                    BitmapDescriptorFactory.HUE_ORANGE))
+                            .position(pos);
 
-                        mMap.addMarker(options3);
-                        break;
-                    case "Guillaint barré":
-                        MarkerOptions options4 = new MarkerOptions()
-                                .title(nomeP + " - Guillaint barré")
-                                .snippet(enderecoP)
-                                .icon(BitmapDescriptorFactory.defaultMarker(
-                                        BitmapDescriptorFactory.HUE_YELLOW))
-                                .position(pos);
+                    mMap.addMarker(options3);
+                    break;
+                case "Guillaint barré":
+                    MarkerOptions options4 = new MarkerOptions()
+                            .title(nomeP + " - Guillaint barré")
+                            .snippet(enderecoP)
+                            .icon(BitmapDescriptorFactory.defaultMarker(
+                                    BitmapDescriptorFactory.HUE_YELLOW))
+                            .position(pos);
 
-                        mMap.addMarker(options4);
-                        break;
-                    case "Foco":
+                    mMap.addMarker(options4);
+                    break;
+                case "Foco":
                       /* MarkerOptions options = new MarkerOptions()
                         .title("Foco")
                         .snippet(enderecoP)
@@ -451,13 +454,12 @@ public class  Main extends AppCompatActivity
                         .position(pos);
 
                 mMap.addMarker(options);*/
-                        drawCircle(pos);
-                        break;
+                    drawCircle(pos);
+                    break;
 
-                }
             }
         }
-
+    }
 
 
     public static void drawCircle(LatLng point) {
@@ -507,7 +509,8 @@ public class  Main extends AppCompatActivity
                 myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(myIntent);
 
-            } });
+            }
+        });
 
         alertDialog.show();
     }
@@ -526,77 +529,83 @@ public class  Main extends AppCompatActivity
     }
 
 
-            @Override
-            public void onConnected(@Nullable Bundle bundle) {
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
 
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    public GoogleApiClient getmGoogleApiClient() {
+        if (mGoogleApiClient == null) {
+            buildGoogleApiClient();
+        }
+        return mGoogleApiClient;
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .enableAutoManage(this, 0 /* clientId */, this)
+                .addApi(Places.GEO_DATA_API)
+                .build();
+    }
+
+    public void PinarMapa(View v) throws IOException {
+        try {
+            String data = "18/04/17";
+            String NOME = AdicionarCaso.nomeE.getText().toString();
+            String PENDERECO = AdicionarCaso.Endereço.getText().toString();
+            String DOENCA = (String) AdicionarCaso.spinner.getSelectedItem();
+            Geocoder gcc = new Geocoder(this);
+            List<Address> list = gcc.getFromLocationName(PENDERECO, 1);
+            Address add = list.get(0);
+            String locality = add.getLocality();
+
+            final double latt = add.getLatitude();
+
+            final double lngg = add.getLongitude();
+
+
+            SQLiteDatabase banco = bd.getReadableDatabase();
+            Cursor cursor = banco.query("login", null, null, null, null, null, null);
+            int id = 0;
+            if (cursor.moveToFirst()) {
+                do {
+                    id = cursor.getInt(cursor.getColumnIndex("id_usuario"));
+                } while (cursor.moveToNext());
             }
 
-            @Override
-            public void onConnectionSuspended(int i) {
+            BancoDeDadosAdapter c = new BancoDeDadosAdapter();
 
-            }
+            c.setId_usuarioDoenca(id);
+            c.setTipoDoenca(DOENCA);
+            c.setNomePessoaDoenca(NOME);
+            c.setDataDoenca(data);
+            c.setLatDoenca(latt);
+            c.setLngDoenca(lngg);
+            c.setEnderecoDoenca(PENDERECO);
 
-            @Override
-            public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+            bd.insertContacttt(c);
+            Toast.makeText(this, id + DOENCA + NOME + latt + lngg, Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            Toast.makeText(this, " O caso não pode ser registrado. Conecte-se a internet, e tente novamente.", Toast.LENGTH_SHORT).show();
+        }
+    }
 
-            }
-            public GoogleApiClient getmGoogleApiClient() {
-                if (mGoogleApiClient == null) {
-                    buildGoogleApiClient();
-                }
-                return mGoogleApiClient;
-            }
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
-            protected synchronized void buildGoogleApiClient() {
-                mGoogleApiClient = new GoogleApiClient.Builder(this)
-                        .addConnectionCallbacks(this)
-                        .addOnConnectionFailedListener(this)
-                        .addApi(LocationServices.API)
-                        .enableAutoManage(this, 0 /* clientId */, this)
-                        .addApi(Places.GEO_DATA_API)
-                        .build();
-            }
-
-            public void PinarMapa(View v) throws IOException{
-                try {
-                    String data = "18/04/17";
-                    String NOME = AdicionarCaso.nomeE.getText().toString();
-                    String PENDERECO = AdicionarCaso.Endereço.getText().toString();
-                    String DOENCA = (String) AdicionarCaso.spinner.getSelectedItem();
-                    Geocoder gcc = new Geocoder(this);
-                    List<Address> list = gcc.getFromLocationName(PENDERECO, 1);
-                    Address add = list.get(0);
-                    String locality = add.getLocality();
-
-                    final double latt = add.getLatitude();
-
-                    final double lngg = add.getLongitude();
-
-
-                    SQLiteDatabase banco = bd.getReadableDatabase();
-                    Cursor cursor = banco.query("login", null, null, null, null, null, null);
-                    int id = 0;
-                    if (cursor.moveToFirst()){
-                        do{
-                             id =  cursor.getInt(cursor.getColumnIndex("id_usuario"));
-                        }while (cursor.moveToNext());
-                    }
-
-                    BancoDeDadosAdapter c = new BancoDeDadosAdapter();
-
-                    c.setId_usuarioDoenca(id);
-                    c.setTipoDoenca(DOENCA);
-                    c.setNomePessoaDoenca(NOME);
-                    c.setDataDoenca(data);
-                    c.setLatDoenca(latt);
-                    c.setLngDoenca(lngg);
-                    c.setEnderecoDoenca(PENDERECO);
-
-                    bd.insertContacttt(c);
-                    Toast.makeText(this, id + DOENCA+ NOME+ latt+lngg, Toast.LENGTH_SHORT).show();
-                } catch (IOException e) {
-                    Toast.makeText(this, " O caso não pode ser registrado. Conecte-se a internet, e tente novamente.", Toast.LENGTH_SHORT).show();
-                }
-            }
+    }
 }
 

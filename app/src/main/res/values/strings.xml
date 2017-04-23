@@ -65,4 +65,13 @@
         <item>Administrador</item>
     </string-array>
 
+
+    <!-- Traduzir -->
+    <string name="cadastrar">Cadastrar</string>
+    <string name="search_list">Lista</string>
+    <string name="search_grafico">Gráfico</string>
+    <string name="search_mapa">Mapa</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
