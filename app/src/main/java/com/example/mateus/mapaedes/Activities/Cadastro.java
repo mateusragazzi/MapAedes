@@ -68,6 +68,7 @@ public class Cadastro extends AppCompatActivity {
 
 
     public void CADASTRO(View view) throws IOException {
+
         Nome = nome.getText().toString();
         Usuario = usuario.getText().toString();
         Cidade = cidade.getText().toString();
