@@ -63,32 +63,6 @@
         android:layout_alignLeft="@+id/NomeP"
         android:layout_alignStart="@+id/NomeP" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Registrar casos de pacientes que possuem Dengue, Zika vírus ou Chicungunya. Preencher todos os campos"
-        android:textSize="10dp"
-        android:id="@+id/info"
-        android:layout_marginTop="27dp"
-        android:layout_below="@+id/spinner"
-        android:layout_alignLeft="@+id/tdoencap"
-        android:layout_alignStart="@+id/tdoencap" />
-
-    <Button
-        android:layout_width="150dp"
-        android:layout_height="40dp"
-        android:text="@string/registrar_caso"
-        android:id="@+id/Registrar"
-        android:onClick="PinarMapa"
-        android:textColor="#fff"
-        android:background="@color/colorPrimary"
-        android:layout_gravity="right"
-        android:layout_marginTop="36dp"
-        android:layout_below="@+id/info"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        />
-
     <AutoCompleteTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -100,4 +74,18 @@
         android:layout_alignStart="@+id/enderecop"
         android:layout_alignRight="@+id/Registrar"
         android:layout_alignEnd="@+id/Registrar" />
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:text="@string/registrar_caso"
+        android:id="@+id/Registrar"
+        android:onClick="PinarMapa"
+        android:textColor="#fff"
+        android:background="@color/colorPrimary"
+        android:layout_gravity="right"
+        android:layout_marginTop="26dp"
+        android:layout_below="@+id/spinner"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
 </RelativeLayout>
