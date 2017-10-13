@@ -28,7 +28,7 @@ public class Login extends AppCompatActivity {
     @BindView(R.id.login_pswd)
     EditText mLoginPswd;
 
-     BancoDeDados bd = new BancoDeDados(this);
+    BancoDeDados bd = new BancoDeDados(this);
 
 
     @Override
@@ -40,22 +40,31 @@ public class Login extends AppCompatActivity {
 
         SQLiteDatabase banco = bd.getReadableDatabase();
 
-      //  banco.execSQL("DELETE FROM login"); //delete all rows in a table
-
+        //  banco.execSQL("DELETE FROM login"); //delete all rows in a table
 
 
         Cursor cur = banco.rawQuery("SELECT EXISTS (SELECT 1 FROM login)", null);
 
-            if (cur != null) {
-                cur.moveToFirst();
-                if (cur.getInt(0) != 0) {
-                    Intent intent = new Intent(Login.this, Main.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+        if (cur != null) {
+            cur.moveToFirst();
+            if (cur.getInt(0) != 0) {
+                Intent intent = new Intent(Login.this, Main.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
 
-                }
             }
         }
+
+/*        LoginBD loginbd = LoginBD.findById(LoginBD.class, 1L);
+        if (loginbd != null){
+            Intent intent = new Intent(Login.this, Main.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }*/
+
+        //LoginBD loginbd = new LoginBD( "zaramarks", "enzara123", "campo grande",15.5334552, 233545.265, "medico");
+        //loginbd.save();
+    }
 
     public void LOGIN(View view) {
 
@@ -71,7 +80,7 @@ public class Login extends AppCompatActivity {
                 String userBd = cursor.getString(cursor.getColumnIndex("userUser"));
                 String senhaBd = cursor.getString(cursor.getColumnIndex("senhaUser"));
 
-                Toast.makeText(this, userBd +" "+ senhaBd, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, userBd + " " + senhaBd, Toast.LENGTH_SHORT).show();
 
                 if (usuario.equals(userBd) && senha.equals(senhaBd)) {
                     int ID = cursor.getInt(cursor.getColumnIndex("idUser"));
@@ -90,7 +99,7 @@ public class Login extends AppCompatActivity {
                     c.setLng(PLNG);
                     c.setTipo(TIPO);
                     bd.insertContact(c);
-                    Toast.makeText(this, "Login realizado com sucesso", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "LoginBD realizado com sucesso", Toast.LENGTH_SHORT).show();
                     conta = 1;
                     Intent intent = new Intent(Login.this, Main.class);
                     startActivity(intent);
@@ -115,7 +124,4 @@ public class Login extends AppCompatActivity {
         startActivity(intent);
     }
 }
-
-
-
 

@@ -9,12 +9,22 @@ public class ListaAdapter {
     String tipo;
     String endereco;
     Double lat, lng;
+    String nome;
 
-    public ListaAdapter(String tipo, String endereco, Double lat, Double lng) {
+    public ListaAdapter(String tipo, String endereco, Double lat, Double lng, String nome) {
         this.tipo = tipo;
         this.endereco = endereco;
         this.lat = lat;
         this.lng = lng;
+        this.nome = nome;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getTipo() {

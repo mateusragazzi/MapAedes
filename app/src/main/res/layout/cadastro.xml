@@ -8,7 +8,8 @@
     android:weightSum="1"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <include layout="@layout/toolbar"
+
+  <include layout="@layout/toolbar"
         android:id="@+id/cadastro_toolbar"></include>
 
     <LinearLayout
@@ -153,13 +154,13 @@
             android:text="Confirmar"
             android:textColor="#fff"/>
 
-        <!--  <AutoCompleteTextView
+      <!--    <AutoCompleteTextView
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:id="@+id/add2"
               android:layout_below="@+id/textView9"
               android:layout_alignParentStart="true"
-              android:layout_alignEnd="@+id/editText6" /> -->'
+              android:layout_alignEnd="@+id/editText6" /> -->
 
     </LinearLayout>
 </LinearLayout>

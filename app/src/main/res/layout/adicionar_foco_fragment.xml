@@ -33,59 +33,66 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 
-    <TextView
+    <!-- <CheckBox
+        android:text="@string/loc_atual"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Adquirir localização atual"
-        android:id="@+id/textView3"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="14dp"
         android:layout_below="@+id/ed"
-        android:layout_alignLeft="@+id/textView7"
-        android:layout_alignStart="@+id/textView7"/>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:src="@mipmap/current"
-        app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0.06"
-        android:layout_marginTop="28dp"
-        android:layout_below="@+id/textView3"
-        android:layout_alignRight="@+id/textView7"
-        android:layout_alignEnd="@+id/textView7"
-        android:layout_width="50dp"
-        android:layout_height="50dp"/>
-
+        android:layout_toLeftOf="@+id/textView3"
+        android:layout_toStartOf="@+id/textView3"
+        android:id="@+id/checkBox"/> -->
     <Button
         android:layout_width="244dp"
         android:layout_height="wrap_content"
-        android:text="Adicionar Foco"
+        android:text="@string/add_focos"
         android:textStyle="bold"
         android:id="@+id/button2"
         android:background="@color/colorPrimary"
         android:textSize="15sp"
         android:textColor="#fff"
         android:onClick="ADICIONARFOCO"
-        android:layout_marginTop="79dp"
-        android:layout_below="@+id/fab"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="25dp"
-        android:layout_marginEnd="25dp"/>
+        android:layout_marginTop="94dp"
+        android:layout_marginLeft="46dp"
+        android:layout_marginStart="46dp" android:layout_below="@+id/ed"
+        android:layout_alignLeft="@+id/textView7" android:layout_alignStart="@+id/textView7"/>
+    <Button
+        android:text="@string/loc_atual"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView7"
+        android:layout_alignLeft="@+id/textView7"
+        android:layout_alignStart="@+id/textView7"
+        android:layout_marginTop="45dp"
+        android:onClick="LOCATUAL"
+        android:id="@+id/locAtual"
+    />
 
-    <!-- <ImageButton
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:id="@+id/imageButton"
-        android:background="@drawable/oval"
-        android:elevation="10dp"
-        android:src="@mipmap/current"
-       android:fabSize="mini"
-        android:layout_alignTop="@+id/editText7"
-        android:layout_alignRight="@+id/RG"
-        android:layout_alignEnd="@+id/RG" />-->
+
+    <!--   <android.support.design.widget.FloatingActionButton
+           android:id="@+id/fabFrag"
+           android:src="@mipmap/current"
+           app:elevation="6dp"
+           app:pressedTranslationZ="12dp"
+           android:layout_gravity="center_horizontal"
+           android:layout_weight="0.06"
+           android:layout_marginTop="32dp"
+           android:layout_width="50dp"
+           android:layout_height="50dp"
+           android:layout_below="@+id/ed" android:layout_alignLeft="@+id/button2"
+           android:layout_alignStart="@+id/button2" android:layout_marginLeft="100dp"
+           android:layout_marginStart="100dp"/>
+
+        <ImageButton
+           android:layout_width="65dp"
+           android:layout_height="65dp"
+           android:id="@+id/imageButton"
+           android:background="@drawable/oval"
+           android:elevation="10dp"
+           android:src="@mipmap/current"
+          android:fabSize="mini"
+           android:layout_alignTop="@+id/editText7"
+           android:layout_alignRight="@+id/RG"
+           android:layout_alignEnd="@+id/RG" />-->
 
 
 </RelativeLayout>

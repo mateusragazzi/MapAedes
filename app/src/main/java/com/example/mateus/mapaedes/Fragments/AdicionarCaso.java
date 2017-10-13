@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.Spinner;
 
+import com.example.mateus.mapaedes.Activities.Main;
 import com.example.mateus.mapaedes.Adapters.PlaceAutocompleteAdapter;
 import com.example.mateus.mapaedes.R;
 import com.google.android.gms.maps.model.LatLng;
@@ -54,6 +55,14 @@ public class AdicionarCaso extends Fragment {
         nomeE =(EditText)v.findViewById(R.id.NomeP);
 
         Endereço.setOnClickListener(mAutocompleteClickListener);
+
+          /* ArrayAdapter<String> mAdapter= new ArrayAdapter<String>(act, android.R.layout.simple_list_item_1,
+                   act.client(), BOUNS_CAMPO_GRANDE, null );*/
+        Main act = (Main) getActivity();
+        mAdapter = new PlaceAutocompleteAdapter(act, android.R.layout.simple_list_item_1,
+                act.getmGoogleApiClient(), BOUNS_CAMPO_GRANDE, null);
+        Endereço.setAdapter(mAdapter);
+        PEndereço = Endereço.getText().toString();
         
 
         return v;

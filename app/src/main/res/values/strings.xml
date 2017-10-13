@@ -45,6 +45,8 @@
     <string name="mmarcadores">Marcadores</string>
     <string name="nav_title_dois">Casos e Focos</string>
     <string name="buscar">Buscar</string>
+    <string name="resultado">Resultado</string>
+    <string name="loc_atual">Localização Atual</string>
 
     <string-array name="users">
         <item>Médico</item>

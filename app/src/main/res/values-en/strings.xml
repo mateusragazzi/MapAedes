@@ -41,6 +41,9 @@
     <string name="mmarcadores">Markers</string>
     <string name="nav_title_dois">Cases and Focus</string>
     <string name="buscar">Search</string>
+    <string name="resultado">Results</string>
+    <string name="loc_atual">Current Location</string>
+
 
     <string-array name="doencas">
     <item>Dengue</item>

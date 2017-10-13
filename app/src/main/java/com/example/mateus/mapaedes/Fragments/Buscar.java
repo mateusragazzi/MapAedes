@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.example.mateus.mapaedes.Activities.resultadoBusca;
 import com.example.mateus.mapaedes.Adapters.BancoDeDados;
 import com.example.mateus.mapaedes.Adapters.ListaAdapter;
 import com.example.mateus.mapaedes.R;
@@ -27,11 +28,11 @@ public class Buscar extends Fragment implements View.OnClickListener {
 
     private CheckBox checkBox, checkBox2, checkBox3;
     public  EditText  etENDERECO;
-    public  int a=0, b=0, c=0, a1 =0, a2 = 0, a3=0, a4=0, a5=0, tipo=0, endereco=0;
+    public static int a=0, b=0, c=0, a1 =0, a2 = 0, a3=0, a4=0, a5=0, tipo=0, endereco=0;
     public RadioButton  dengue, zika, chikungunya, guillain_barre, nyong_nyong;
-    public ArrayList<ListaAdapter> result = new ArrayList<>();
+    public static ArrayList<ListaAdapter> result = new ArrayList<>();
     public ArrayList<String> lista = new ArrayList<>();
-    public String doencaP, enderecoP, etendereco, nomeP;
+    public static String doencaP, enderecoP, etendereco, nomeP;
     public double Plat1, Plng2;
 
 
@@ -230,12 +231,12 @@ public class Buscar extends Fragment implements View.OnClickListener {
 
                                 if (doencaP.equals(nome)) {
                                     if (endereco == 0) {
-                                        ListaAdapter listaAdapter = new ListaAdapter (doencaP, enderecoP, Plat1, Plng2);
+                                        ListaAdapter listaAdapter = new ListaAdapter (doencaP, enderecoP, Plat1, Plng2, nomeP);
                                         result.add(listaAdapter);
                                         // Toast.makeText(getActivity(),"oi", Toast.LENGTH_SHORT).show();
                                     } else {
                                         if (enderecoP.contains(etendereco)){
-                                           ListaAdapter listaAdapter = new ListaAdapter (doencaP, enderecoP, Plat1, Plng2);
+                                           ListaAdapter listaAdapter = new ListaAdapter (doencaP, enderecoP, Plat1, Plng2, nomeP);
                                             result.add(listaAdapter);
                                         }
                                     }
@@ -258,7 +259,7 @@ public class Buscar extends Fragment implements View.OnClickListener {
 
                 */
 
-                Intent intent = new Intent(getActivity(),resultadoComLista.class);
+                Intent intent = new Intent(getActivity(), resultadoBusca.class);
                 startActivity(intent);
             }
 
@@ -297,7 +298,7 @@ public class Buscar extends Fragment implements View.OnClickListener {
                  Double Plng2 = cursore.getDouble(cursore.getColumnIndex("lngDoenca"));
 
                 if (enderecoP.contains(etendereco)){
-                    ListaAdapter listaAdapter = new ListaAdapter(doencaP, enderecoP, Plat1, Plng2);
+                    ListaAdapter listaAdapter = new ListaAdapter(doencaP, enderecoP, Plat1, Plng2, nomeP);
                     result.add(listaAdapter);
                 }
             } while (cursore.moveToNext());
@@ -309,7 +310,7 @@ public class Buscar extends Fragment implements View.OnClickListener {
     public void Busca(){
         for (int i = 0; i < result.size(); i++) {
             String resultado =  result.get(i).getTipo() + result.get(i).getEndereco();
-            Toast.makeText(getActivity(),resultado, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getActivity(),resultado, Toast.LENGTH_SHORT).show();
         }
 
         if (result.size() == 0){

@@ -62,6 +62,9 @@ public class BancoDeDados extends SQLiteOpenHelper {
 
     }
 
+
+
+
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(TABLE_LOGIN);
