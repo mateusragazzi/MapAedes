@@ -13,7 +13,7 @@ import com.example.mateus.mapaedes.R;
  * Created by zazah on 27/02/2017.
  */
 
-public class AdicionarFoco extends Fragment{
+public class AdicionarFoco extends Fragment {
 
     public static EditText endereço;
 
@@ -43,7 +43,6 @@ public class AdicionarFoco extends Fragment{
 
     public AdicionarFoco() {
     }
-
 
 
     public interface OnFragmentInteractionListener {

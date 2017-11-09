@@ -23,8 +23,8 @@ import com.google.android.gms.maps.model.LatLngBounds;
  */
 
 public class AdicionarCaso extends Fragment {
-    public  ArrayAdapter<String> opcoes;
-    public  static Spinner spinner;
+    public ArrayAdapter<String> opcoes;
+    public static Spinner spinner;
     private PlaceAutocompleteAdapter mAdapter;
     public static AutoCompleteTextView Endereço;
     public static String PEndereço;
@@ -32,8 +32,6 @@ public class AdicionarCaso extends Fragment {
     public static EditText nomeE;
     View.OnClickListener mAutocompleteClickListener;
     public static final LatLngBounds BOUNS_CAMPO_GRANDE = new LatLngBounds(new LatLng(-20.595001, -54.503947), new LatLng(-20.364035, -54.765508));
-
-
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,7 +50,7 @@ public class AdicionarCaso extends Fragment {
         opcoes.add("Guillaint barré");
 
         Endereço = (AutoCompleteTextView) v.findViewById(R.id.endereço);
-        nomeE =(EditText)v.findViewById(R.id.NomeP);
+        nomeE = (EditText) v.findViewById(R.id.NomeP);
 
         Endereço.setOnClickListener(mAutocompleteClickListener);
 
@@ -63,7 +61,7 @@ public class AdicionarCaso extends Fragment {
                 act.getmGoogleApiClient(), BOUNS_CAMPO_GRANDE, null);
         Endereço.setAdapter(mAdapter);
         PEndereço = Endereço.getText().toString();
-        
+
 
         return v;
     }

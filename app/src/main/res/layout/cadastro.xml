@@ -9,8 +9,8 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
-  <include layout="@layout/toolbar"
-        android:id="@+id/cadastro_toolbar"></include>
+    <include android:id="@+id/cadastro_toolbar"
+             layout="@layout/toolbar"></include>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,11 +36,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:inputType="text"
-            android:imeOptions="actionSend"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentStart="true"/>;
+            android:layout_alignParentStart="true"
+            android:imeOptions="actionSend"
+            android:inputType="text"/>;
 
 
         <TextView
@@ -58,12 +58,12 @@
             android:id="@+id/editText5"
             android:layout_width="match_parent"
 
-            android:inputType="text"
-            android:imeOptions="actionSend"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"/>
+            android:layout_alignParentTop="true"
+            android:imeOptions="actionSend"
+            android:inputType="text"/>
 
         <TextView
             android:id="@+id/textView8"
@@ -82,12 +82,12 @@
 
             android:layout_height="wrap_content"
 
-            android:imeOptions="actionSend"
             android:layout_alignParentEnd="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/textView6"
+            android:imeOptions="actionSend"
             android:inputType="textPassword"/>
 
         <TextView
@@ -109,13 +109,13 @@
             android:id="@+id/add"
             android:layout_width="match_parent"
 
-            android:inputType="text"
-            android:imeOptions="actionSend"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/textView9"
-            android:hint="Campo Grande, MS"/>
+            android:hint="Campo Grande, MS"
+            android:imeOptions="actionSend"
+            android:inputType="text"/>
 
         <TextView
             android:id="@+id/textView10"
@@ -127,7 +127,7 @@
             android:text="@string/pessoa"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="#000"
-            />
+        />
 
         <Spinner
             android:id="@+id/spinner2"
@@ -154,13 +154,13 @@
             android:text="Confirmar"
             android:textColor="#fff"/>
 
-      <!--    <AutoCompleteTextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:id="@+id/add2"
-              android:layout_below="@+id/textView9"
-              android:layout_alignParentStart="true"
-              android:layout_alignEnd="@+id/editText6" /> -->
+        <!--    <AutoCompleteTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/add2"
+                android:layout_below="@+id/textView9"
+                android:layout_alignParentStart="true"
+                android:layout_alignEnd="@+id/editText6" /> -->
 
     </LinearLayout>
 </LinearLayout>

@@ -16,11 +16,11 @@
     <!--android:paddingTop="@dimen/activity_vertical_margin"-->
 
     <FrameLayout
+        android:id="@+id/Conteiner"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/Conteiner"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true">
     </FrameLayout>
 
 </RelativeLayout>

@@ -5,14 +5,12 @@ android {
     buildToolsVersion "25.0.1"
     defaultConfig {
         applicationId "com.example.mateus.mapaedes"
-        minSdkVersion 15
+        minSdkVersion 22
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        
-
-
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -39,6 +37,7 @@ dependencies {
     compile 'com.github.PhilJay:MPAndroidChart:v2.2.0'
     compile 'com.google.android.gms:play-services:10.2.1'
     compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:multidex:1.0.1'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 }

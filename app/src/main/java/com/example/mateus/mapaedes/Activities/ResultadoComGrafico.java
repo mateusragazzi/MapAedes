@@ -19,7 +19,7 @@ import java.util.List;
 
 public class ResultadoComGrafico extends AppCompatActivity {
     private int[] setColors = new int[]{Color.RED, Color.GREEN, Color.GRAY, Color.YELLOW, Color.BLUE, Color.BLACK};
-    private int[] cont = new int[]{0,0,0,0,0,0};
+    private int[] cont = new int[]{0, 0, 0, 0, 0, 0};
     private ArrayList<String> mDoencas = new ArrayList<>();
     private BarChart mBarChart;
     private BarDataSet mBarDataSet;
@@ -43,7 +43,7 @@ public class ResultadoComGrafico extends AppCompatActivity {
     private void openGraph() {
         info.clear();
         mBarChart = (BarChart) findViewById(R.id.grafico);
-        for (int i = 0; i < mDoencas.size(); i++){
+        for (int i = 0; i < mDoencas.size(); i++) {
             String str = mDoencas.get(i);
             int index = str.indexOf("-");
             String doenca = str.substring(index + 1).trim();

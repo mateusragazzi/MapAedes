@@ -1,8 +1,6 @@
 package com.example.mateus.mapaedes.Fragments;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,11 +13,12 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.example.mateus.mapaedes.Activities.resultadoBusca;
-import com.example.mateus.mapaedes.Adapters.BancoDeDados;
 import com.example.mateus.mapaedes.Adapters.ListaAdapter;
 import com.example.mateus.mapaedes.R;
+import com.example.mateus.mapaedes.helpers.Disease;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by zazah on 08/08/2016.
@@ -27,33 +26,36 @@ import java.util.ArrayList;
 public class Buscar extends Fragment implements View.OnClickListener {
 
     private CheckBox checkBox, checkBox2, checkBox3;
-    public  EditText  etENDERECO;
-    public static int a=0, b=0, c=0, a1 =0, a2 = 0, a3=0, a4=0, a5=0, tipo=0, endereco=0;
-    public RadioButton  dengue, zika, chikungunya, guillain_barre, nyong_nyong;
+    public EditText etENDERECO;
+    public static int a = 0, b = 0, c = 0, a1 = 0, a2 = 0, a3 = 0, a4 = 0, a5 = 0, tipo = 0, endereco = 0;
+    public RadioButton dengue, zika, chikungunya, guillain_barre, nyong_nyong;
     public static ArrayList<ListaAdapter> result = new ArrayList<>();
     public ArrayList<String> lista = new ArrayList<>();
     public static String doencaP, enderecoP, etendereco, nomeP;
     public double Plat1, Plng2;
+
+    List<Disease> diseases = Disease.listAll(Disease.class);
+
+    private String name, disease, address;
+    private double lat, lng;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View g = inflater.inflate(R.layout.buscar_fragment, container, false);
 
 
-
         checkBox2 = (CheckBox) g.findViewById(R.id.checkBox2);
         checkBox3 = (CheckBox) g.findViewById(R.id.checkBox3);
 
 
+        dengue = (RadioButton) g.findViewById(R.id.radioButton2);
+        zika = (RadioButton) g.findViewById(R.id.radioButton3);
+        chikungunya = (RadioButton) g.findViewById(R.id.radioButton4);
+        guillain_barre = (RadioButton) g.findViewById(R.id.radioButton5);
+        nyong_nyong = (RadioButton) g.findViewById(R.id.radioButton6);
 
-        dengue = (RadioButton)g.findViewById(R.id.radioButton2);
-        zika = (RadioButton)g.findViewById(R.id.radioButton3);
-        chikungunya = (RadioButton)g.findViewById(R.id.radioButton4);
-        guillain_barre = (RadioButton)g.findViewById(R.id.radioButton5);
-        nyong_nyong = (RadioButton)g.findViewById(R.id.radioButton6);
 
-
-        etENDERECO = (EditText)g.findViewById(R.id.etEndereco);
+        etENDERECO = (EditText) g.findViewById(R.id.etEndereco);
 
 
         etENDERECO.setVisibility(View.INVISIBLE);
@@ -62,14 +64,14 @@ public class Buscar extends Fragment implements View.OnClickListener {
         checkBox2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkBox2.isChecked()){
+                if (checkBox2.isChecked()) {
                     dengue.setEnabled(true);
                     zika.setEnabled(true);
                     chikungunya.setEnabled(true);
                     guillain_barre.setEnabled(true);
                     nyong_nyong.setEnabled(true);
-                    b=1;
-                }else{
+                    b = 1;
+                } else {
                     dengue.setEnabled(false);
                     zika.setEnabled(false);
                     chikungunya.setEnabled(false);
@@ -82,7 +84,7 @@ public class Buscar extends Fragment implements View.OnClickListener {
                     guillain_barre.setChecked(false);
                     nyong_nyong.setChecked(false);
 
-                    b=0;
+                    b = 0;
                 }
 
             }
@@ -93,26 +95,26 @@ public class Buscar extends Fragment implements View.OnClickListener {
             public void onClick(View v) {
                 if (checkBox3.isChecked()) {
                     etENDERECO.setVisibility(View.VISIBLE);
-                    c=1;
+                    c = 1;
                 } else {
                     etENDERECO.setVisibility(View.INVISIBLE);
-                    c=0;
+                    c = 0;
                 }
             }
-            });
+        });
 
-          dengue.setOnClickListener(new View.OnClickListener() {
+        dengue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (dengue.isChecked()) {
 
-                    if (a1 == 1){
+                    if (a1 == 1) {
                         dengue.setChecked(false);
                         // Toast.makeText(getActivity(), a1, Toast.LENGTH_SHORT).show();
                         a1 = 0;
-                    }else{
+                    } else {
                         dengue.setChecked(true);
-                        a1=1;
+                        a1 = 1;
                         // Toast.makeText(getActivity(), a1, Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -176,9 +178,8 @@ public class Buscar extends Fragment implements View.OnClickListener {
         });
 
 
-
         Button BUSCAR = (Button) g.findViewById(R.id.buscar);
-        BUSCAR.setOnClickListener( new View.OnClickListener() {
+        BUSCAR.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -215,10 +216,31 @@ public class Buscar extends Fragment implements View.OnClickListener {
 
                 if (tipo == 1) {
                     for (int i = 0; i < lista.size(); i++) {
-                        String nome = lista.get(i);
-                        //Toast.makeText(getActivity(),nome, Toast.LENGTH_SHORT).show();
 
-                        BancoDeDados bd = new BancoDeDados(getActivity());
+                        String nome = lista.get(i);
+                        // i 0 ou 1
+                        for (int j = 0; j < diseases.size(); j++) {
+                            name = diseases.get(j).getNameUser();
+                            disease = diseases.get(j).getDisease();
+                            address = diseases.get(j).getAddress();
+                            lat = diseases.get(j).getLat();
+                            lng = diseases.get(j).getLng();
+
+                            if (disease.equals(nome)) {
+                                if (endereco == 0) {
+                                    ListaAdapter listaAdapter = new ListaAdapter(disease, address, lat, lng, name);
+                                    result.add(listaAdapter);
+                                    // Toast.makeText(getActivity(),"oi", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    if (address.contains(etendereco)) {
+                                        ListaAdapter listaAdapter = new ListaAdapter(disease, address, lat, lng, name);
+                                        result.add(listaAdapter);
+                                    }
+                                }
+                            }
+                        }
+
+                       /* BancoDeDados bd = new BancoDeDados(getActivity());
                         SQLiteDatabase banco = bd.getReadableDatabase();
                         Cursor cursore = banco.query("casos", null, null, null, null, null, null);
                         if (cursore.moveToFirst()) {
@@ -243,37 +265,21 @@ public class Buscar extends Fragment implements View.OnClickListener {
                                 }
 
                             }while (cursore.moveToNext());
-                        }
-
-
+                        }*/
                     }
-                }else if (endereco == 1){
-                 Endereco();
+                } else if (endereco == 1) {
+                    Endereco();
                 }
                 Busca();
-
-                /*
-
-                ABRIR OS RESULTADOS DAS TABS, AGORA ESTA ABRINDO UMA CLASSE QUE EU TINHA CRIADO PARA FAZER AS TABS, MAS VOCE
-                CRIOU NOVASSSS
-
-                */
 
                 Intent intent = new Intent(getActivity(), resultadoBusca.class);
                 startActivity(intent);
             }
 
-            });
-
-
-
-
-
-
+        });
 
         return g;
     }
-
 
 
     @Override
@@ -286,7 +292,7 @@ public class Buscar extends Fragment implements View.OnClickListener {
 
     public void Endereco() {
 
-        BancoDeDados bd = new BancoDeDados(getActivity());
+       /* BancoDeDados bd = new BancoDeDados(getActivity());
         SQLiteDatabase banco = bd.getReadableDatabase();
         Cursor cursore = banco.query("Casos", null, null, null, null, null, null);
         if (cursore.moveToFirst()) {
@@ -302,22 +308,30 @@ public class Buscar extends Fragment implements View.OnClickListener {
                     result.add(listaAdapter);
                 }
             } while (cursore.moveToNext());
+        }*/
+
+        for (int j = 0; j < diseases.size(); j++) {
+            name = diseases.get(j).getNameUser();
+            disease = diseases.get(j).getDisease();
+            address = diseases.get(j).getAddress();
+            lat = diseases.get(j).getLat();
+            lng = diseases.get(j).getLng();
+
+            if (address.contains(etendereco)) {
+                ListaAdapter listaAdapter = new ListaAdapter(disease, address, lat, lng, name);
+                result.add(listaAdapter);
+            }
+
         }
     }
 
 
-
-    public void Busca(){
-        for (int i = 0; i < result.size(); i++) {
-            String resultado =  result.get(i).getTipo() + result.get(i).getEndereco();
-           // Toast.makeText(getActivity(),resultado, Toast.LENGTH_SHORT).show();
-        }
-
-        if (result.size() == 0){
-            Toast.makeText(getActivity(),"Nenhum resultado obtido", Toast.LENGTH_SHORT).show();
+    public void Busca() {
+        if (result.size() == 0) {
+            Toast.makeText(getActivity(), "Nenhum resultado obtido", Toast.LENGTH_SHORT).show();
 
         }
     }
-    }
+}
 
 

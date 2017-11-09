@@ -31,13 +31,14 @@ import java.io.IOException;
 import java.util.List;
 
 
-public class resultadoComMapa extends AppCompatActivity implements OnMapReadyCallback{
+public class resultadoComMapa extends AppCompatActivity implements OnMapReadyCallback {
 
     private LatLng location;
 
     public static SupportMapFragment mFragMap;
     public static GoogleMap mMap;
     private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +48,6 @@ public class resultadoComMapa extends AppCompatActivity implements OnMapReadyCal
         getSupportActionBar().setTitle("Map");
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
 
         mFragMap = new SupportMapFragment();
@@ -92,14 +92,14 @@ public class resultadoComMapa extends AppCompatActivity implements OnMapReadyCal
 
         for (int i = 0; i < Buscar.result.size(); i++) {
 
-            String  doencaP =  Buscar.result.get(i).getTipo();
-            String  nomeP =  Buscar.result.get(i).getNome();
-            String  enderecoP = Buscar.result.get(i).getEndereco();
+            String doencaP = Buscar.result.get(i).getTipo();
+            String nomeP = Buscar.result.get(i).getNome();
+            String enderecoP = Buscar.result.get(i).getEndereco();
 
 
-            Double lat =  Buscar.result.get(i).getLat();
-            Double lng =  Buscar.result.get(i).getLng();
-            Toast.makeText(this, "oi",  Toast.LENGTH_SHORT).show();
+            Double lat = Buscar.result.get(i).getLat();
+            Double lng = Buscar.result.get(i).getLng();
+            Toast.makeText(this, "oi", Toast.LENGTH_SHORT).show();
 
 
             LatLng pos = new LatLng(lat, lng);
@@ -173,7 +173,7 @@ public class resultadoComMapa extends AppCompatActivity implements OnMapReadyCal
     }
 
 
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         Intent myIntent = new Intent(getApplicationContext(), resultadoBusca.class);
         startActivityForResult(myIntent, 0);
         return true;

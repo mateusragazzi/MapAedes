@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+              android:layout_width="match_parent"
 
-    android:layout_height="match_parent"
-    android:weightSum="1"
-    android:orientation="vertical">
-
-
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:weightSum="1">
 
 
-        <!-- <TextView
+    <!-- <TextView
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:text="Buscar"
@@ -21,123 +19,123 @@ android:layout_gravity="center_horizontal"
 android:layout_marginTop="15dp" /> -->
 
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/doenca"
-            android:textStyle="bold"
-            android:id="@+id/checkBox2"
-            android:textColor="#000"
-            android:theme="@style/checkBoxStyle"
-            android:checked="false"
-            android:textSize="18sp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="20dp"/>
-        <RadioButton
-            android:text="@string/dengue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/radioButton2"
-            android:enabled="false"
-            android:layout_alignBaseline="@+id/radioButton6"
-            android:layout_alignBottom="@+id/radioButton6"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="10dp"/>
-
-    <RadioButton
-        android:text="@string/zika_virus"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/radioButton3"
-        android:enabled="false"
-        android:layout_marginLeft="40dp"
-        android:layout_below="@+id/radioButton4"
-        android:layout_alignLeft="@+id/radioButton4"
-        android:layout_alignStart="@+id/radioButton4"/>
-
-    <RadioButton
-        android:text="@string/chikungunya"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/radioButton4"
-        android:layout_marginLeft="40dp"
-        android:enabled="false"
-        android:layout_below="@+id/radioButton5"
-        android:layout_alignLeft="@+id/radioButton5"
-        android:layout_alignStart="@+id/radioButton5"
-        />
-
-    <RadioButton
-            android:text="@string/guillaint_barre"
-            android:layout_width="304dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/radioButton5"
-            android:enabled="false"
-            android:layout_marginLeft="40dp"
-            android:layout_below="@+id/radioButton6"
-            android:layout_alignLeft="@+id/radioButton6"
-            android:layout_alignStart="@+id/radioButton6"/>
-
-    <RadioButton
-            android:text="@string/nyongnyong"
-            android:layout_width="314dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/radioButton6"
-            android:enabled="false"
-            android:layout_marginLeft="40dp"
-            android:layout_below="@+id/buscar"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-        />
-
     <CheckBox
+        android:id="@+id/checkBox2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/endereco"
-        android:id="@+id/checkBox3"
-        android:textStyle="bold"
-        android:theme="@style/checkBoxStyle"
-        android:textColor="#000"
-        android:textSize="18sp"
-
-        android:checked="false"
-        android:layout_below="@+id/etEndereco"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:checked="false"
+        android:text="@string/doenca"
+        android:textColor="#000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:theme="@style/checkBoxStyle"/>
+    <RadioButton
+        android:id="@+id/radioButton2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/radioButton6"
+        android:layout_alignBottom="@+id/radioButton6"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="10dp"
+        android:enabled="false"
+        android:text="@string/dengue"/>
+
+    <RadioButton
+        android:id="@+id/radioButton3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/radioButton4"
+        android:layout_alignStart="@+id/radioButton4"
+        android:layout_below="@+id/radioButton4"
+        android:layout_marginLeft="40dp"
+        android:enabled="false"
+        android:text="@string/zika_virus"/>
+
+    <RadioButton
+        android:id="@+id/radioButton4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/radioButton5"
+        android:layout_alignStart="@+id/radioButton5"
+        android:layout_below="@+id/radioButton5"
+        android:layout_marginLeft="40dp"
+        android:enabled="false"
+        android:text="@string/chikungunya"
+    />
+
+    <RadioButton
+        android:id="@+id/radioButton5"
+        android:layout_width="304dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/radioButton6"
+        android:layout_alignStart="@+id/radioButton6"
+        android:layout_below="@+id/radioButton6"
+        android:layout_marginLeft="40dp"
+        android:enabled="false"
+        android:text="@string/guillaint_barre"/>
+
+    <RadioButton
+        android:id="@+id/radioButton6"
+        android:layout_width="314dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/buscar"
+        android:layout_marginLeft="40dp"
+        android:enabled="false"
+        android:text="@string/nyongnyong"
+    />
+
+    <CheckBox
+        android:id="@+id/checkBox3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/etEndereco"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="28dp"
-        android:layout_marginStart="20dp"/>
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:id="@+id/etEndereco"
-            android:layout_below="@+id/radioButton4"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp"/>
+        android:checked="false"
+        android:text="@string/endereco"
+        android:textColor="#000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:theme="@style/checkBoxStyle"/>
 
-    <Button
+    <EditText
+        android:id="@+id/etEndereco"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:text="@string/buscar"
-
-
-        android:id="@+id/buscar"
-        android:background="@color/colorPrimary"
-        android:textStyle="bold"
-        android:textSize="17sp"
-        android:textColor="#fff"
-        android:layout_alignTop="@+id/checkBox2"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="20dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/radioButton4"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"/>
+
+    <Button
+        android:id="@+id/buscar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+
+
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/checkBox2"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorPrimary"
+        android:text="@string/buscar"
+        android:textColor="#fff"
+        android:textSize="17sp"
+        android:textStyle="bold"/>
 
 
 </LinearLayout>

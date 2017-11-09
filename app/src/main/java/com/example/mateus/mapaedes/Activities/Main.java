@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
@@ -30,7 +28,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.style.TextAppearanceSpan;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,19 +35,15 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.mateus.mapaedes.Adapters.BancoDeDados;
-import com.example.mateus.mapaedes.Adapters.BancoDeDadosAdapter;
 import com.example.mateus.mapaedes.Fragments.AdicionarCaso;
 import com.example.mateus.mapaedes.Fragments.AdicionarFoco;
 import com.example.mateus.mapaedes.Fragments.Buscar;
 import com.example.mateus.mapaedes.Fragments.Configuracoes;
 import com.example.mateus.mapaedes.Fragments.Informacoes;
-import com.example.mateus.mapaedes.Fragments.Logout;
 import com.example.mateus.mapaedes.Fragments.MeusCasosAdicionados;
-import com.example.mateus.mapaedes.Fragments.SearchGraph;
-import com.example.mateus.mapaedes.Fragments.SearchList;
-import com.example.mateus.mapaedes.Fragments.SearchMap;
-import com.example.mateus.mapaedes.Fragments.TabResultados;
 import com.example.mateus.mapaedes.R;
+import com.example.mateus.mapaedes.helpers.Disease;
+import com.example.mateus.mapaedes.helpers.LoggedUser;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -68,25 +61,22 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.R.attr.id;
-
 public class Main extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AdicionarCaso.OnFragmentInteractionListener,
-        AdicionarFoco.OnFragmentInteractionListener, SearchList.OnFragmentInteractionListener,
-        TabResultados.OnFragmentInteractionListener, SearchGraph.OnFragmentInteractionListener,
-        Configuracoes.OnFragmentInteractionListener, SearchMap.OnFragmentInteractionListener,
+        AdicionarFoco.OnFragmentInteractionListener,
+        Configuracoes.OnFragmentInteractionListener,
         Informacoes.OnFragmentInteractionListener,
-        Logout.OnFragmentInteractionListener,
         MeusCasosAdicionados.OnFragmentInteractionListener,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    public Double LAT, LNG;
     private String mUser;
     private String[] mUsers;
     private Menu mMenu;
@@ -95,10 +85,8 @@ public class Main extends AppCompatActivity
     public GoogleApiClient client;
     public GoogleApiClient mGoogleApiClient = null;
     public SupportMapFragment mFragMap = null;
-    private static final double CG_LAT = -20.4435,
-            CG_LGT = -54.6478;
     public String tipo;
-    public static LatLng pos;
+    public static LatLng positionMarker;
     protected LocationManager locationManager;
     protected LocationListener locationListener;
 
@@ -113,8 +101,8 @@ public class Main extends AppCompatActivity
     Toolbar mToolbar;
 
     BancoDeDados bd = new BancoDeDados(this);
-    AdicionarFoco adicionarFoco = new AdicionarFoco();
 
+    List<LoggedUser> cityUser = LoggedUser.listAll(LoggedUser.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,7 +176,121 @@ public class Main extends AppCompatActivity
         android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         int id = item.getItemId();
 
-        SQLiteDatabase banco = bd.getReadableDatabase();
+        List<LoggedUser> userTotal = LoggedUser.listAll(LoggedUser.class);
+        // 0 ou 1
+            int tipo = userTotal.get(0).getUser().getType();
+            if( tipo == 0){
+                mMenu.findItem(R.id.nav_title_focos).setVisible(false);
+                mMenu.findItem(R.id.nav_title_dois).setVisible(false);
+                configuraTitle(mMenu.findItem(R.id.nav_title_casos));
+                switch (item.getItemId()) {
+                    case R.id.nav_map:
+
+                        mFragMap = new SupportMapFragment();
+                        mFragMap.getMapAsync(new OnMapReadyCallback() {
+                            @Override
+                            public void onMapReady(GoogleMap googleMap) {
+                                mMap = googleMap;
+
+                                try {
+                                    configuraMapa();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                //gotoLocation(CG_LAT,CG_LGT, DEFAULTZOM);
+                            }
+
+
+                        });
+
+
+                        fm.beginTransaction()
+                                .replace(R.id.Conteiner, mFragMap)
+                                .addToBackStack("")
+                                .commit();
+
+                        break;
+                    case R.id.nav_addcasos:
+                        frag = new AdicionarCaso();
+                        trocaFrag(fm, frag);
+                        break;
+                    case R.id.nav_listarcasos:
+                        frag = new MeusCasosAdicionados();
+                        trocaFrag(fm, frag);
+                        break;
+                    case R.id.nav_buscar:
+                        frag = new Buscar();
+                        trocaFrag(fm, frag);
+                        break;
+                    case R.id.nav_info:
+                        frag = new Informacoes();
+                        trocaFrag(fm, frag);
+                        break;
+                    case R.id.nav_settings:
+                        frag = new Configuracoes();
+                        trocaFrag(fm, frag);
+                        break;
+                    case R.id.nav_logout:
+                        sair();
+                        break;
+                }
+                //FOCO
+            } else if (tipo == 1) {
+                mMenu.findItem(R.id.nav_title_casos).setVisible(false);
+                mMenu.findItem(R.id.nav_title_dois).setVisible(false);
+                configuraTitle(mMenu.findItem(R.id.nav_title_focos));
+                switch (item.getItemId()) {
+                    case R.id.nav_map:
+                        mFragMap = new SupportMapFragment();
+                        mFragMap.getMapAsync(new OnMapReadyCallback() {
+                            @Override
+                            public void onMapReady(GoogleMap googleMap) {
+                                mMap = googleMap;
+
+                                try {
+                                    configuraMapa();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                //gotoLocation(CG_LAT,CG_LGT, DEFAULTZOM);
+                            }
+
+
+                        });
+                        fm.beginTransaction()
+                                .replace(R.id.Conteiner, mFragMap)
+                                .addToBackStack("")
+                                .commit();
+
+                        break;
+                    case R.id.nav_addfoco:
+                        frag = new AdicionarFoco();
+                        trocaFrag(fm, frag);
+                        break;
+                    case R.id.nav_listarfoco:
+                        frag = new MeusCasosAdicionados();
+                        trocaFrag(fm, frag);
+                        break;
+                    case R.id.nav_buscar:
+                        frag = new Buscar();
+                        trocaFrag(fm, frag);
+                        break;
+                    case R.id.nav_info:
+                        frag = new Informacoes();
+                        trocaFrag(fm, frag);
+                        break;
+                    case R.id.nav_settings:
+                        frag = new Configuracoes();
+                        trocaFrag(fm, frag);
+                        break;
+                    case R.id.nav_logout:
+                        sair();
+                        break;
+                }
+            }
+
+
+       /* SQLiteDatabase banco = bd.getReadableDatabase();
         Cursor cursor = banco.query("login", null, null, null, null, null, null);
 
         if (cursor.moveToFirst()) {
@@ -366,15 +468,16 @@ public class Main extends AppCompatActivity
                     break;
             }
 
+        } */
 
-        }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
     private void configuraMapa() throws IOException {
-        SQLiteDatabase banco = bd.getReadableDatabase();
+        /*SQLiteDatabase banco = bd.getReadableDatabase();
         Cursor cursor = banco.query("login", null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
@@ -388,15 +491,21 @@ public class Main extends AppCompatActivity
         final double platt = LAT;
         final double plngg = LNG;
 
-        LatLng latlngg = new LatLng(platt, plngg);
+        LatLng latlngg = new LatLng(platt, plngg);*/
 
 
-        final CameraPosition cp = new CameraPosition.Builder().target(latlngg).zoom(13).bearing(0).tilt(00).build();
+        Double lat = cityUser.get(0).getUser().getLat();
+        Double lng = cityUser.get(0).getUser().getLng();
+
+        LatLng latLng = new LatLng(lat, lng);
+
+
+        final CameraPosition cp = new CameraPosition.Builder().target(latLng).zoom(13).bearing(0).tilt(00).build();
         CameraUpdate cam = CameraUpdateFactory.newCameraPosition(cp);
         mMap.moveCamera(cam);
 
 
-        SQLiteDatabase bancoo = bd.getReadableDatabase();
+       /* SQLiteDatabase bancoo = bd.getReadableDatabase();
         Cursor cursore = bancoo.query("casos", null, null, null, null, null, null);
         while (cursore.moveToNext()) {
             Log.e("Condiçao", "entrou");
@@ -410,58 +519,69 @@ public class Main extends AppCompatActivity
             final double plat = latP;
             final double plng = lngP;
 
-            pos = new LatLng(plat, plng);
+            pos = new LatLng(plat, plng);*/
 
-            switch (doencaP) {
+        List<Disease> diseasesList = Disease.listAll(Disease.class);
+        for (int i = 0; i < diseasesList.size(); i++) {
+            String disease = diseasesList.get(i).getDisease();
+            String name = diseasesList.get(i).getNameUser();
+            String address = diseasesList.get(i).getAddress();
+
+            Double latP = diseasesList.get(i).getLat();
+            Double lngP = diseasesList.get(i).getLng();
+
+            positionMarker = new LatLng(latP, lngP);
+
+            switch (disease) {
                 case "Dengue":
                     MarkerOptions options = new MarkerOptions()
-                            .title(nomeP + " - Dengue")
-                            .snippet(enderecoP)
+                            .title(name + " - Dengue")
+                            .snippet(address)
                             .icon(BitmapDescriptorFactory.defaultMarker(
                                     BitmapDescriptorFactory.HUE_RED))
 
-                            .position(pos);
+                            .position(positionMarker);
 
                     mMap.addMarker(options);
                     break;
                 case "Zika vírus":
                     MarkerOptions options1 = new MarkerOptions()
-                            .title(nomeP + " - Zika vírus")
-                            .snippet(enderecoP)
+                            .title(name + " - Zika vírus")
+                            .snippet(address)
                             .icon(BitmapDescriptorFactory.defaultMarker(
                                     BitmapDescriptorFactory.HUE_GREEN))
 
-                            .position(pos);
+                            .position(positionMarker);
 
                     mMap.addMarker(options1);
                     break;
                 case "Chikungunya":
                     MarkerOptions options2 = new MarkerOptions()
-                            .title(nomeP + " - Chicungunya")
-                            .snippet(enderecoP)
+                            .title(name + " - Chicungunya")
+                            .snippet(address)
                             .icon(BitmapDescriptorFactory.defaultMarker(
                                     BitmapDescriptorFactory.HUE_AZURE))
-                            .position(pos);
+                            .position(positionMarker);
 
                     mMap.addMarker(options2);
                     break;
                 case "Nyongnyong":
                     MarkerOptions options3 = new MarkerOptions()
-                            .title(nomeP + " - Nyongnyong")
-                            .snippet(enderecoP)
+                            .title(name + " - Nyongnyong")
+                            .snippet(address)
                             .icon(BitmapDescriptorFactory.defaultMarker(
                                     BitmapDescriptorFactory.HUE_ORANGE))
-                            .position(pos);
+                            .position(positionMarker);
 
                     mMap.addMarker(options3);
                     break;
                 case "Guillaint barré":
                     MarkerOptions options4 = new MarkerOptions()
-                            .title(nomeP + " - Guillaint barré")
-                            .snippet(enderecoP)
+                            .title(name + " - Guillaint barré")
+                            .snippet(address)
                             .icon(BitmapDescriptorFactory.defaultMarker(
                                     BitmapDescriptorFactory.HUE_YELLOW))
-                            .position(pos);
+                            .position(positionMarker);
 
                     mMap.addMarker(options4);
                     break;
@@ -474,11 +594,12 @@ public class Main extends AppCompatActivity
                         .position(pos);
 
                 mMap.addMarker(options);*/
-                    drawCircle(pos);
+                    drawCircle(positionMarker);
                     break;
 
             }
         }
+
     }
 
 
@@ -513,9 +634,13 @@ public class Main extends AppCompatActivity
         alertDialog.setMessage("Caso saia, você será deslogado de sua conta");
         alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                SQLiteDatabase banco = bd.getReadableDatabase();
+               /* SQLiteDatabase banco = bd.getReadableDatabase();
 
-                banco.execSQL("DELETE FROM login"); //delete all rows in a table
+                banco.execSQL("DELETE FROM login"); //delete all rows in a table*/
+
+                List<LoggedUser> loggedUsers = LoggedUser.listAll(LoggedUser.class);
+
+                LoggedUser.deleteAll(LoggedUser.class);
                 Intent myIntent = new Intent(((Dialog) dialog).getContext(), Login.class);
                 myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(myIntent);
@@ -583,21 +708,44 @@ public class Main extends AppCompatActivity
 
     public void PinarMapa(View v) throws IOException {
         try {
-            String data = "18/04/17";
-            String NOME = AdicionarCaso.nomeE.getText().toString();
-            String PENDERECO = AdicionarCaso.Endereço.getText().toString();
-            String DOENCA = (String) AdicionarCaso.spinner.getSelectedItem();
+            Calendar c = Calendar.getInstance();
+            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+
+            String datePerson = df.format(c.getTime());
+            String namePerson = AdicionarCaso.nomeE.getText().toString();
+            String addressPerson = AdicionarCaso.Endereço.getText().toString();
+            String diseasePerson = (String) AdicionarCaso.spinner.getSelectedItem();
+
             Geocoder gcc = new Geocoder(this);
-            List<Address> list = gcc.getFromLocationName(PENDERECO, 1);
-            Address add = list.get(0);
-            String locality = add.getLocality();
+            List<Address> list = gcc.getFromLocationName(addressPerson, 1);
+            Address address = list.get(0);
 
-            final double latt = add.getLatitude();
+            final double lat = address.getLatitude();
 
-            final double lngg = add.getLongitude();
+            final double lng = address.getLongitude();
+
+            // 0 ou 1 no get()
+
+            long idUser = cityUser.get(0).getId();
+
+            Disease disease = new Disease();
+
+            disease.setRegisterID(idUser);
+            disease.setDate(datePerson);
+            disease.setDisease(diseasePerson);
+            disease.setNameUser(namePerson);
+            disease.setAddress(addressPerson);
+            disease.setLat(lat);
+            disease.setLng(lng);
+
+            disease.save();
 
 
-            SQLiteDatabase banco = bd.getReadableDatabase();
+
+
+
+
+           /* SQLiteDatabase banco = bd.getReadableDatabase();
             Cursor cursor = banco.query("login", null, null, null, null, null, null);
             int id = 0;
             if (cursor.moveToFirst()) {
@@ -616,21 +764,25 @@ public class Main extends AppCompatActivity
             c.setLngDoenca(lngg);
             c.setEnderecoDoenca(PENDERECO);
 
-            bd.insertContacttt(c);
-            Toast.makeText(this, id + DOENCA + NOME + latt + lngg, Toast.LENGTH_SHORT).show();
+            bd.insertContacttt(c);*/
+            Toast.makeText(this, " Case registered", Toast.LENGTH_SHORT).show();
+
         } catch (IOException e) {
-            Toast.makeText(this, " O caso não pode ser registrado. Conecte-se a internet, e tente novamente.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, " O caso não pode ser registrado. Conecte-se a internet, e tente" +
+                    " novamente.", Toast.LENGTH_SHORT).show();
         }
     }
 
-    @Override
+
     public void onFragmentInteraction(Uri uri) {
 
     }
 
     public void LOCATUAL(View v) {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
+                (this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -648,14 +800,13 @@ public class Main extends AppCompatActivity
     public void onLocationChanged(Location location) {
 
 
-
         double lat = location.getLatitude();
         double lng = location.getLongitude();
 
         Toast.makeText(this, " Lat:" + location.getLatitude() + "Lng: " + location.getLongitude(), Toast.LENGTH_SHORT).show();
 
 
-       // adicionarFoco.endereço.setText();
+        // adicionarFoco.endereço.setText();
     }
 
     @Override
@@ -675,37 +826,55 @@ public class Main extends AppCompatActivity
 
     public void ADICIONARFOCO(View view) {
 
-        // Toast.makeText(this, addFocos.tipo, Toast.LENGTH_SHORT).show();
-        String teste = AdicionarFoco.endereço.getText().toString().toLowerCase();
+        String addressFocus = AdicionarFoco.endereço.getText().toString().toLowerCase();
         Geocoder geocoder;
-        List<Address> addresses = null;
         geocoder = new Geocoder(this, Locale.getDefault());
         List<Address> list = null;
+
         try {
-            list = geocoder.getFromLocationName(teste, 1);
+            list = geocoder.getFromLocationName(addressFocus, 1);
         } catch (IOException e1) {
             e1.printStackTrace();
         }
         Address add = list.get(0);
 
-        final double lattt = add.getLatitude();
+        final double lat = add.getLatitude();
+        final double lng = add.getLongitude();
 
-        final double lnggg = add.getLongitude();
-        String te = "Foco";
-        Log.v("latitude", String.valueOf(lattt));
+        String foco = "Foco";
+
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        String datePerson = df.format(c.getTime());
+
+        // 0 ou 1 no get()
+
+        long idUser = cityUser.get(1).getId();
 
 
-        BancoDeDadosAdapter c = new BancoDeDadosAdapter();
+       /* BancoDeDadosAdapter c = new BancoDeDadosAdapter();
 
         c.setId_usuarioDoenca(id);
-        c.setTipoDoenca(te);
-        c.setNomePessoaDoenca(te);
-        c.setDataDoenca(te);
+        c.setTipoDoenca(foco);
+        c.setNomePessoaDoenca(foco);
+        c.setDataDoenca(foco);
         c.setLatDoenca(lattt);
         c.setLngDoenca(lnggg);
-        c.setEnderecoDoenca(teste);
+        c.setEnderecoDoenca(addressFocus);
 
-        bd.insertContacttt(c);
+        bd.insertContacttt(c);*/
+
+        Disease disease = new Disease();
+
+        disease.setRegisterID(idUser);
+        disease.setDate(datePerson);
+        disease.setDisease(foco);
+        disease.setNameUser(foco);
+        disease.setAddress(foco);
+        disease.setLat(lat);
+        disease.setLng(lng);
+
+        disease.save();
         Toast.makeText(this, "Focus registered!", Toast.LENGTH_SHORT).show();
     }
 

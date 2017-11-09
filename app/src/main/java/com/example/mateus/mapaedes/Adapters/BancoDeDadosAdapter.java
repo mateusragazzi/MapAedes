@@ -12,7 +12,7 @@ public class BancoDeDadosAdapter {
     private String cidade;
     private Double lat;
     private Double lng;
-    private int  tipo;
+    private int tipo;
 
     //Adapter
 
@@ -99,7 +99,6 @@ public class BancoDeDadosAdapter {
     public Double getLngDoenca() {
         return lngDoenca;
     }
-
 
 
     //adapter

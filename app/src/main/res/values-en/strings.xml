@@ -29,7 +29,7 @@
     <string name="confirmar">Confirm</string>
     <string name="cadastro">Create an account</string>
     <string name="sairFrag">Wish to logout?</string>
-    <string name="sairFragCond">If you logout, you will be disconnected of your account </string>
+    <string name="sairFragCond">If you logout, you will be disconnected of your account</string>
     <string name="Rsenha">Password</string>
     <string name="Login">Login</string>
     <string name="registre_se">Register</string>
@@ -46,11 +46,11 @@
 
 
     <string-array name="doencas">
-    <item>Dengue</item>
-    <item>Zika vírus</item>
-    <item>Chikungunya</item>
-    <item>Nyongnyong</item>
-    <item>Guillain barré</item>
+        <item>Dengue</item>
+        <item>Zika vírus</item>
+        <item>Chikungunya</item>
+        <item>Nyongnyong</item>
+        <item>Guillain barré</item>
     </string-array>
 
     <string-array name="pessoas">

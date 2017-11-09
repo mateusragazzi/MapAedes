@@ -1,91 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+                android:layout_width="match_parent"
 
-    android:layout_height="match_parent"
-    android:weightSum="1"
-    android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:weightSum="1">
 
 
     <TextView
+        android:id="@+id/tdoencap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/doenca"
-        android:textSize="17sp"
-        android:textColor="#000"
-        android:id="@+id/tdoencap"
-        android:layout_below="@+id/endereço"
         android:layout_alignLeft="@+id/endereço"
         android:layout_alignStart="@+id/endereço"
-        android:layout_marginTop="16dp" />
+        android:layout_below="@+id/endereço"
+        android:layout_marginTop="16dp"
+        android:text="@string/doenca"
+        android:textColor="#000"
+        android:textSize="17sp"/>
 
     <TextView
+        android:id="@+id/nomep"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/nome_completo"
-        android:textColor="#000"
-        android:textSize="17sp"
-        android:id="@+id/nomep"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="32dp" />
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="32dp"
+        android:text="@string/nome_completo"
+        android:textColor="#000"
+        android:textSize="17sp"/>
 
     <EditText
+        android:id="@+id/NomeP"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/NomeP"
-        android:hint="Ex: Maria Aquino"
-        android:textSize="15dp"
-        android:layout_below="@+id/nomep"
+        android:layout_alignEnd="@+id/Registrar"
         android:layout_alignLeft="@+id/nomep"
-        android:layout_alignStart="@+id/nomep"
         android:layout_alignRight="@+id/Registrar"
-        android:layout_alignEnd="@+id/Registrar" />
+        android:layout_alignStart="@+id/nomep"
+        android:layout_below="@+id/nomep"
+        android:hint="Ex: Maria Aquino"
+        android:textSize="15dp"/>
 
     <Spinner
+        android:id="@+id/spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner"
-        android:layout_marginTop="15dp"
-        android:layout_below="@+id/tdoencap"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tdoencap"
+        android:layout_marginTop="15dp"/>
 
     <TextView
+        android:id="@+id/enderecop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/endereco"
-        android:textSize="17sp"
-        android:textColor="#000"
-        android:id="@+id/enderecop"
-        android:layout_below="@+id/NomeP"
         android:layout_alignLeft="@+id/NomeP"
-        android:layout_alignStart="@+id/NomeP" />
+        android:layout_alignStart="@+id/NomeP"
+        android:layout_below="@+id/NomeP"
+        android:text="@string/endereco"
+        android:textColor="#000"
+        android:textSize="17sp"/>
 
     <AutoCompleteTextView
+        android:id="@+id/endereço"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/endereço"
-        android:hint="Ex: Rua Aedes, 259"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/enderecop"
+        android:layout_alignEnd="@+id/Registrar"
         android:layout_alignLeft="@+id/enderecop"
-        android:layout_alignStart="@+id/enderecop"
         android:layout_alignRight="@+id/Registrar"
-        android:layout_alignEnd="@+id/Registrar" />
+        android:layout_alignStart="@+id/enderecop"
+        android:layout_below="@+id/enderecop"
+        android:layout_marginTop="10dp"
+        android:hint="Ex: Rua Aedes, 259"/>
 
     <Button
+        android:id="@+id/Registrar"
         android:layout_width="150dp"
         android:layout_height="40dp"
-        android:text="@string/registrar_caso"
-        android:id="@+id/Registrar"
-        android:onClick="PinarMapa"
-        android:textColor="#fff"
-        android:background="@color/colorPrimary"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/spinner"
         android:layout_gravity="right"
         android:layout_marginTop="26dp"
-        android:layout_below="@+id/spinner"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:background="@color/colorPrimary"
+        android:onClick="PinarMapa"
+        android:text="@string/registrar_caso"
+        android:textColor="#fff"/>
 </RelativeLayout>

@@ -49,11 +49,11 @@ public class BancoDeDados extends SQLiteOpenHelper {
     public static final String COL_TIPOD = "tipoDoenca";
     public static final String COL_NOMED = "nomePessoaDoenca";
     public static final String COL_ENDERECOD = "enderecoDoenca";
-    public static final String  COL_DATA = "dataDoenca";
+    public static final String COL_DATA = "dataDoenca";
     public static final String COL_LATD = "latDoenca";
     public static final String COL_LNGD = "lngDoenca";
 
-    private static  final String TABLE_CASOS = "create table casos ( idDoenca integer primary key  ,  "+" id_usuarioDoenca int, tipoDoenca TEXT ,  nomePessoaDoenca TEXT , enderecoDoenca TEXT,dataDoenca TEXT, latDoenca REAL, lngDoenca REAL);";
+    private static final String TABLE_CASOS = "create table casos ( idDoenca integer primary key  ,  " + " id_usuarioDoenca int, tipoDoenca TEXT ,  nomePessoaDoenca TEXT , enderecoDoenca TEXT,dataDoenca TEXT, latDoenca REAL, lngDoenca REAL);";
 
 
     public BancoDeDados(Context context) {
@@ -61,8 +61,6 @@ public class BancoDeDados extends SQLiteOpenHelper {
 
 
     }
-
-
 
 
     @Override
@@ -74,12 +72,12 @@ public class BancoDeDados extends SQLiteOpenHelper {
 
         this.bd = sqLiteDatabase;
     }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("drop table if exists "+TABLE_NAME +TABLE_NAME2 + TABLE_NAME3);
+        db.execSQL("drop table if exists " + TABLE_NAME + TABLE_NAME2 + TABLE_NAME3);
         onCreate(db);
     }
-
 
 
     public void insertContact(BancoDeDadosAdapter c) {

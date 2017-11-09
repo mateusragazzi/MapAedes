@@ -12,8 +12,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.mateus.mapaedes.Adapters.BancoDeDados;
-import com.example.mateus.mapaedes.Adapters.BancoDeDadosAdapter;
 import com.example.mateus.mapaedes.R;
+import com.example.mateus.mapaedes.helpers.User;
 
 import java.io.IOException;
 import java.util.List;
@@ -42,7 +42,7 @@ public class Cadastro extends AppCompatActivity {
     Toolbar mToolbar;
 
     String Nome;
-    String Usuario;
+    String Email;
     String Senha;
     int Pessoas;
     String Cidade;
@@ -61,7 +61,7 @@ public class Cadastro extends AppCompatActivity {
 
     }
 
-    public void setupToolbar(){
+    public void setupToolbar() {
         mToolbar.setTitle(R.string.cadastrar);
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -74,7 +74,7 @@ public class Cadastro extends AppCompatActivity {
     public void CADASTRO(View view) throws IOException {
 
         Nome = nome.getText().toString();
-        Usuario = usuario.getText().toString();
+        Email = usuario.getText().toString();
         Cidade = cidade.getText().toString();
         Senha = senha.getText().toString();
         Pessoas = pessoas.getSelectedItemPosition();
@@ -91,9 +91,20 @@ public class Cadastro extends AppCompatActivity {
 
         final double lng = add.getLongitude();
 
+        User user = new User();
+        user.setName(Nome);
+        user.setEmail(Email);
+        user.setPassword(Senha);
+        user.setCity(Cidade);
+        user.setLat(lat);
+        user.setLng(lng);
+        user.setType(Pessoas);
+
+        user.save();
+
 
         //Colocando no BD
-        BancoDeDadosAdapter c = new BancoDeDadosAdapter();
+      /*  BancoDeDadosAdapter c = new BancoDeDadosAdapter();
         c.setUserUser(Usuario);
         c.setCidadeUser(Cidade);
         c.setNomeUser(Nome);
@@ -101,8 +112,7 @@ public class Cadastro extends AppCompatActivity {
         c.setTipoUser(Pessoas);
         c.setLatUser(lat);
         c.setLngUser(lng);
-
-        helper.insertContactt(c);
+        helper.insertContactt(c);*/
 
         makeText(this, "Registered with success!", Toast.LENGTH_SHORT).show();
 
@@ -110,9 +120,9 @@ public class Cadastro extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
 
-        }
-
     }
+
+}
 
 
 
