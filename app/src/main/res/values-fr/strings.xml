@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <string name="app_name">MapAedes</string>
+
+        <string name="navigation_drawer_open">Ouvrir navigation drawer</string>
+        <string name="navigation_drawer_close">Proche navigation drawer</string>
+
+        <!-- Tranduzido -->
+        <string name="action_settings">Paramètres</string>
+
+        <string name="mapa">Map</string>
+        <string name="add_casos">Ajouter des cas</string>
+        <string name="casos_adicionados">Cas ajoutés</string>
+        <string name="procurar_casos">Recherche</string>
+        <string name="add_focos">Ajouter des foyer</string>
+        <string name="focos_adicionados">Énumérer les éclosions</string>
+        <string name="procurar_focos">Recherche</string>
+        <string name="informacoes">Information</string>
+        <string name="configuracoes">Paramètres</string>
+        <string name="sair">Sortir</string>
+        <string name="nome_completo">Nom Complet</string>
+        <string name="doenca">Maladie</string>
+        <string name="endereco">Adresse</string>
+        <string name="login">Login</string>
+        <string name="registrar_caso">Enregistrer un Cas</string>
+        <string name="title_foco">Foyer</string>
+        <string name="title_casos">Cas</string>
+        <string name="sobrenome">Nom Prénom</string>
+        <string name="nome_usuario">Nom d utilisateur</string>
+        <string name="senha">Password</string>
+        <string name="cidade">Ville</string>
+        <string name="pessoa">Personne</string>
+        <string name="criar_conta">Vous n avez pas de compte?</string>
+        <string name="confirmar">Confirmer</string>
+        <string name="cadastro">À propos de nous</string>
+        <string name="sairFrag">Voulez-vous quitter?</string>
+        <string name="sairFragCond">Si vous partez, vous serez déconnecté de votre compte</string>
+        <string name="Rsenha">Password</string>
+        <string name="Login">Login</string>
+        <string name="registre_se">À propos de nous</string>
+        <string name="dengue">Dengue</string>
+        <string name="zika_virus">Zika vírus</string>
+        <string name="chikungunya">Chikungunya</string>
+        <string name="nyongnyong">Nyongnyong</string>
+        <string name="guillaint_barre">Guillaint barré</string>
+        <string name="mmarcadores">Markers</string>
+        <string name="nav_title_dois">Cas et Foyer</string>
+        <string name="buscar">Chercher</string>
+        <string name="resultado">Résultat</string>
+        <string name="loc_atual">Emplacement actuel</string>
+
+        <string-array name="users">
+            <item>Docteur</item>
+            <item>Agent de Santé</item>
+        </string-array>
+
+        <string-array name="doencas">
+            <item>Dengue</item>
+            <item>Zika vírus</item>
+            <item>Chikungunya</item>
+            <item>Nyongnyong</item>
+            <item>Guillain barré</item>
+        </string-array>
+
+        <string-array name="pessoas">
+            <item>Docteur</item>
+            <item>Agent de Santé</item>
+            <item>Administrateur</item>
+        </string-array>
+
+
+        <!-- Traduzir -->
+        <string name="cadastrar">Enregistrer</string>
+        <string name="search_list">Liste</string>
+        <string name="search_grafico">Graphique</string>
+        <string name="search_mapa">Map</string>
+        <!-- TODO: Remove or change this placeholder text -->
+        <string name="hello_blank_fragment">Bonjour fragment blanc</string>
+
+
+</resources>

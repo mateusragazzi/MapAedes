@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.mateus.mapaedes.Adapters.BancoDeDados;
 import com.example.mateus.mapaedes.R;
 import com.example.mateus.mapaedes.helpers.User;
 
@@ -47,8 +46,6 @@ public class Cadastro extends AppCompatActivity {
     int Pessoas;
     String Cidade;
 
-    BancoDeDados helper = new BancoDeDados(this);
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +79,7 @@ public class Cadastro extends AppCompatActivity {
 
         //Adapter -- Pegando lat e lng da Cidade
         Geocoder gcc = new Geocoder(this);
-        List<Address> list = gcc.getFromLocationName(Cidade, 1);
+                List<Address> list = gcc.getFromLocationName(Cidade, 1);
         Address add = list.get(0);
         String locality = add.getLocality();
         makeText(this, locality, Toast.LENGTH_LONG).show();
@@ -90,6 +87,7 @@ public class Cadastro extends AppCompatActivity {
         final double lat = add.getLatitude();
 
         final double lng = add.getLongitude();
+
 
         User user = new User();
         user.setName(Nome);
@@ -101,18 +99,6 @@ public class Cadastro extends AppCompatActivity {
         user.setType(Pessoas);
 
         user.save();
-
-
-        //Colocando no BD
-      /*  BancoDeDadosAdapter c = new BancoDeDadosAdapter();
-        c.setUserUser(Usuario);
-        c.setCidadeUser(Cidade);
-        c.setNomeUser(Nome);
-        c.setSenhaUser(Senha);
-        c.setTipoUser(Pessoas);
-        c.setLatUser(lat);
-        c.setLngUser(lng);
-        helper.insertContactt(c);*/
 
         makeText(this, "Registered with success!", Toast.LENGTH_SHORT).show();
 

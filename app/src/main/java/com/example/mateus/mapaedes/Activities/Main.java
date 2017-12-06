@@ -34,7 +34,6 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.example.mateus.mapaedes.Adapters.BancoDeDados;
 import com.example.mateus.mapaedes.Fragments.AdicionarCaso;
 import com.example.mateus.mapaedes.Fragments.AdicionarFoco;
 import com.example.mateus.mapaedes.Fragments.Buscar;
@@ -85,10 +84,8 @@ public class Main extends AppCompatActivity
     public GoogleApiClient client;
     public GoogleApiClient mGoogleApiClient = null;
     public SupportMapFragment mFragMap = null;
-    public String tipo;
     public static LatLng positionMarker;
     protected LocationManager locationManager;
-    protected LocationListener locationListener;
 
 
     @BindView(R.id.content_main)
@@ -100,7 +97,6 @@ public class Main extends AppCompatActivity
     @BindView(R.id.main_toolbar)
     Toolbar mToolbar;
 
-    BancoDeDados bd = new BancoDeDados(this);
 
     List<LoggedUser> cityUser = LoggedUser.listAll(LoggedUser.class);
 
@@ -178,127 +174,8 @@ public class Main extends AppCompatActivity
 
         List<LoggedUser> userTotal = LoggedUser.listAll(LoggedUser.class);
         // 0 ou 1
-            int tipo = userTotal.get(0).getUser().getType();
-            if( tipo == 0){
-                mMenu.findItem(R.id.nav_title_focos).setVisible(false);
-                mMenu.findItem(R.id.nav_title_dois).setVisible(false);
-                configuraTitle(mMenu.findItem(R.id.nav_title_casos));
-                switch (item.getItemId()) {
-                    case R.id.nav_map:
-
-                        mFragMap = new SupportMapFragment();
-                        mFragMap.getMapAsync(new OnMapReadyCallback() {
-                            @Override
-                            public void onMapReady(GoogleMap googleMap) {
-                                mMap = googleMap;
-
-                                try {
-                                    configuraMapa();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                                //gotoLocation(CG_LAT,CG_LGT, DEFAULTZOM);
-                            }
-
-
-                        });
-
-
-                        fm.beginTransaction()
-                                .replace(R.id.Conteiner, mFragMap)
-                                .addToBackStack("")
-                                .commit();
-
-                        break;
-                    case R.id.nav_addcasos:
-                        frag = new AdicionarCaso();
-                        trocaFrag(fm, frag);
-                        break;
-                    case R.id.nav_listarcasos:
-                        frag = new MeusCasosAdicionados();
-                        trocaFrag(fm, frag);
-                        break;
-                    case R.id.nav_buscar:
-                        frag = new Buscar();
-                        trocaFrag(fm, frag);
-                        break;
-                    case R.id.nav_info:
-                        frag = new Informacoes();
-                        trocaFrag(fm, frag);
-                        break;
-                    case R.id.nav_settings:
-                        frag = new Configuracoes();
-                        trocaFrag(fm, frag);
-                        break;
-                    case R.id.nav_logout:
-                        sair();
-                        break;
-                }
-                //FOCO
-            } else if (tipo == 1) {
-                mMenu.findItem(R.id.nav_title_casos).setVisible(false);
-                mMenu.findItem(R.id.nav_title_dois).setVisible(false);
-                configuraTitle(mMenu.findItem(R.id.nav_title_focos));
-                switch (item.getItemId()) {
-                    case R.id.nav_map:
-                        mFragMap = new SupportMapFragment();
-                        mFragMap.getMapAsync(new OnMapReadyCallback() {
-                            @Override
-                            public void onMapReady(GoogleMap googleMap) {
-                                mMap = googleMap;
-
-                                try {
-                                    configuraMapa();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                                //gotoLocation(CG_LAT,CG_LGT, DEFAULTZOM);
-                            }
-
-
-                        });
-                        fm.beginTransaction()
-                                .replace(R.id.Conteiner, mFragMap)
-                                .addToBackStack("")
-                                .commit();
-
-                        break;
-                    case R.id.nav_addfoco:
-                        frag = new AdicionarFoco();
-                        trocaFrag(fm, frag);
-                        break;
-                    case R.id.nav_listarfoco:
-                        frag = new MeusCasosAdicionados();
-                        trocaFrag(fm, frag);
-                        break;
-                    case R.id.nav_buscar:
-                        frag = new Buscar();
-                        trocaFrag(fm, frag);
-                        break;
-                    case R.id.nav_info:
-                        frag = new Informacoes();
-                        trocaFrag(fm, frag);
-                        break;
-                    case R.id.nav_settings:
-                        frag = new Configuracoes();
-                        trocaFrag(fm, frag);
-                        break;
-                    case R.id.nav_logout:
-                        sair();
-                        break;
-                }
-            }
-
-
-       /* SQLiteDatabase banco = bd.getReadableDatabase();
-        Cursor cursor = banco.query("login", null, null, null, null, null, null);
-
-        if (cursor.moveToFirst()) {
-            tipo = cursor.getString(cursor.getColumnIndex("tipo"));
-        }
-
-        //CASOS
-        if (tipo.equals("0")) {
+        int tipo = userTotal.get(0).getUser().getType();
+        if (tipo == 0) {
             mMenu.findItem(R.id.nav_title_focos).setVisible(false);
             mMenu.findItem(R.id.nav_title_dois).setVisible(false);
             configuraTitle(mMenu.findItem(R.id.nav_title_casos));
@@ -354,7 +231,7 @@ public class Main extends AppCompatActivity
                     break;
             }
             //FOCO
-        } else if (tipo.equals("1")) {
+        } else if (tipo == 1) {
             mMenu.findItem(R.id.nav_title_casos).setVisible(false);
             mMenu.findItem(R.id.nav_title_dois).setVisible(false);
             configuraTitle(mMenu.findItem(R.id.nav_title_focos));
@@ -406,69 +283,7 @@ public class Main extends AppCompatActivity
                     sair();
                     break;
             }
-            //ADM
-        } else {
-            mMenu.findItem(R.id.nav_title_casos).setVisible(false);
-            mMenu.findItem(R.id.nav_title_focos).setVisible(false);
-            configuraTitle(mMenu.findItem(R.id.nav_title_dois));
-            switch (item.getItemId()) {
-                case R.id.nav_map:
-                    mFragMap = new SupportMapFragment();
-                    mFragMap.getMapAsync(new OnMapReadyCallback() {
-                        @Override
-                        public void onMapReady(GoogleMap googleMap) {
-                            mMap = googleMap;
-
-                            try {
-                                configuraMapa();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            //gotoLocation(CG_LAT,CG_LGT, DEFAULTZOM);
-                        }
-
-
-                    });
-                    fm.beginTransaction()
-                            .replace(R.id.Conteiner, mFragMap)
-                            .addToBackStack("")
-                            .commit();
-
-                    break;
-                case R.id.nav_addcasos:
-                    frag = new AdicionarCaso();
-                    trocaFrag(fm, frag);
-                    break;
-                case R.id.nav_addfoco:
-                    frag = new AdicionarFoco();
-                    trocaFrag(fm, frag);
-                    break;
-                case R.id.nav_listarcasos:
-                    frag = new MeusCasosAdicionados();
-                    trocaFrag(fm, frag);
-                    break;
-                case R.id.nav_listarfoco:
-                    frag = new MeusCasosAdicionados();
-                    trocaFrag(fm, frag);
-                    break;
-                case R.id.nav_buscar:
-                    frag = new Buscar();
-                    trocaFrag(fm, frag);
-                    break;
-                case R.id.nav_info:
-                    frag = new Informacoes();
-                    trocaFrag(fm, frag);
-                    break;
-                case R.id.nav_settings:
-                    frag = new Configuracoes();
-                    trocaFrag(fm, frag);
-                    break;
-                case R.id.nav_logout:
-                    sair();
-                    break;
-            }
-
-        } */
+        }
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -477,22 +292,6 @@ public class Main extends AppCompatActivity
     }
 
     private void configuraMapa() throws IOException {
-        /*SQLiteDatabase banco = bd.getReadableDatabase();
-        Cursor cursor = banco.query("login", null, null, null, null, null, null);
-        if (cursor.moveToFirst()) {
-            do {
-                String USER = cursor.getString(cursor.getColumnIndex("usuario"));
-                LAT = cursor.getDouble(cursor.getColumnIndex("lat"));
-                LNG = cursor.getDouble(cursor.getColumnIndex("lng"));
-
-
-            } while (cursor.moveToNext());
-        }
-        final double platt = LAT;
-        final double plngg = LNG;
-
-        LatLng latlngg = new LatLng(platt, plngg);*/
-
 
         Double lat = cityUser.get(0).getUser().getLat();
         Double lng = cityUser.get(0).getUser().getLng();
@@ -504,22 +303,6 @@ public class Main extends AppCompatActivity
         CameraUpdate cam = CameraUpdateFactory.newCameraPosition(cp);
         mMap.moveCamera(cam);
 
-
-       /* SQLiteDatabase bancoo = bd.getReadableDatabase();
-        Cursor cursore = bancoo.query("casos", null, null, null, null, null, null);
-        while (cursore.moveToNext()) {
-            Log.e("Condiçao", "entrou");
-            String nomeP = cursore.getString(cursore.getColumnIndex("nomePessoaDoenca"));
-            String doencaP = cursore.getString(cursore.getColumnIndex("tipoDoenca"));
-            String enderecoP = cursore.getString(cursore.getColumnIndex("enderecoDoenca"));
-            Double latP = cursore.getDouble(cursore.getColumnIndex("latDoenca"));
-            Double lngP = cursore.getDouble(cursore.getColumnIndex("lngDoenca"));
-
-
-            final double plat = latP;
-            final double plng = lngP;
-
-            pos = new LatLng(plat, plng);*/
 
         List<Disease> diseasesList = Disease.listAll(Disease.class);
         for (int i = 0; i < diseasesList.size(); i++) {
@@ -586,15 +369,16 @@ public class Main extends AppCompatActivity
                     mMap.addMarker(options4);
                     break;
                 case "Foco":
-                      /* MarkerOptions options = new MarkerOptions()
-                        .title("Foco")
-                        .snippet(enderecoP)
-                        .icon(BitmapDescriptorFactory.defaultMarker(
-                                BitmapDescriptorFactory.HU))
-                        .position(pos);
+                    MarkerOptions options5 = new MarkerOptions()
+                            .title(name + " - Foco")
+                            .snippet(address)
+                            .icon(BitmapDescriptorFactory.defaultMarker(
+                                    BitmapDescriptorFactory.HUE_AZURE))
+                            .position(positionMarker);
 
-                mMap.addMarker(options);*/
+                    mMap.addMarker(options5);
                     drawCircle(positionMarker);
+                    //BitmapDescriptorFactory.fromResource(R.mipmap.point
                     break;
 
             }
@@ -605,7 +389,7 @@ public class Main extends AppCompatActivity
 
     public static void drawCircle(LatLng point) {
 
-        // Instantiating CircleOptions to draw a circle around the marker
+      /*  // Instantiating CircleOptions to draw a circle around the marker
         CircleOptions circleOptions = new CircleOptions();
 
         // Specifying the center of the circle
@@ -625,6 +409,19 @@ public class Main extends AppCompatActivity
 
         // Adding the circle to the GoogleMap
         mMap.addCircle(circleOptions);
+
+        */
+        for (int rad = 100; rad <= 500; rad = rad + 100) {
+
+            CircleOptions circleOptions = new CircleOptions()
+                    .center(point)   //set center
+                    .radius(rad)   //set radius in meters
+                    .fillColor(Color.TRANSPARENT)  //default
+                    .strokeColor(0x1000000)
+                    .strokeWidth(5);
+
+            mMap.addCircle(circleOptions);
+        }
 
     }
 
@@ -740,31 +537,6 @@ public class Main extends AppCompatActivity
 
             disease.save();
 
-
-
-
-
-
-           /* SQLiteDatabase banco = bd.getReadableDatabase();
-            Cursor cursor = banco.query("login", null, null, null, null, null, null);
-            int id = 0;
-            if (cursor.moveToFirst()) {
-                do {
-                    id = cursor.getInt(cursor.getColumnIndex("id_usuario"));
-                } while (cursor.moveToNext());
-            }
-
-            BancoDeDadosAdapter c = new BancoDeDadosAdapter();
-
-            c.setId_usuarioDoenca(id);
-            c.setTipoDoenca(DOENCA);
-            c.setNomePessoaDoenca(NOME);
-            c.setDataDoenca(data);
-            c.setLatDoenca(latt);
-            c.setLngDoenca(lngg);
-            c.setEnderecoDoenca(PENDERECO);
-
-            bd.insertContacttt(c);*/
             Toast.makeText(this, " Case registered", Toast.LENGTH_SHORT).show();
 
         } catch (IOException e) {
@@ -849,20 +621,8 @@ public class Main extends AppCompatActivity
 
         // 0 ou 1 no get()
 
-        long idUser = cityUser.get(1).getId();
+        long idUser = cityUser.get(0).getId();
 
-
-       /* BancoDeDadosAdapter c = new BancoDeDadosAdapter();
-
-        c.setId_usuarioDoenca(id);
-        c.setTipoDoenca(foco);
-        c.setNomePessoaDoenca(foco);
-        c.setDataDoenca(foco);
-        c.setLatDoenca(lattt);
-        c.setLngDoenca(lnggg);
-        c.setEnderecoDoenca(addressFocus);
-
-        bd.insertContacttt(c);*/
 
         Disease disease = new Disease();
 

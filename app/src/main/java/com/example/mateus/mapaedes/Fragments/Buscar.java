@@ -25,14 +25,14 @@ import java.util.List;
  */
 public class Buscar extends Fragment implements View.OnClickListener {
 
-    private CheckBox checkBox, checkBox2, checkBox3;
+    private CheckBox  checkBox2, checkBox3;
     public EditText etENDERECO;
     public static int a = 0, b = 0, c = 0, a1 = 0, a2 = 0, a3 = 0, a4 = 0, a5 = 0, tipo = 0, endereco = 0;
     public RadioButton dengue, zika, chikungunya, guillain_barre, nyong_nyong;
     public static ArrayList<ListaAdapter> result = new ArrayList<>();
     public ArrayList<String> lista = new ArrayList<>();
-    public static String doencaP, enderecoP, etendereco, nomeP;
-    public double Plat1, Plng2;
+    public static String  etendereco;
+
 
     List<Disease> diseases = Disease.listAll(Disease.class);
 
@@ -240,32 +240,7 @@ public class Buscar extends Fragment implements View.OnClickListener {
                             }
                         }
 
-                       /* BancoDeDados bd = new BancoDeDados(getActivity());
-                        SQLiteDatabase banco = bd.getReadableDatabase();
-                        Cursor cursore = banco.query("casos", null, null, null, null, null, null);
-                        if (cursore.moveToFirst()) {
-                            do{
-                                nomeP = cursore.getString(cursore.getColumnIndex("nomePessoaDoenca"));
-                                doencaP = cursore.getString(cursore.getColumnIndex("tipoDoenca"));
-                                enderecoP = cursore.getString(cursore.getColumnIndex("enderecoDoenca")).toLowerCase();
-                                Plat1 = cursore.getDouble(cursore.getColumnIndex("latDoenca"));
-                                Plng2 = cursore.getDouble(cursore.getColumnIndex("lngDoenca"));
 
-                                if (doencaP.equals(nome)) {
-                                    if (endereco == 0) {
-                                        ListaAdapter listaAdapter = new ListaAdapter (doencaP, enderecoP, Plat1, Plng2, nomeP);
-                                        result.add(listaAdapter);
-                                        // Toast.makeText(getActivity(),"oi", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        if (enderecoP.contains(etendereco)){
-                                           ListaAdapter listaAdapter = new ListaAdapter (doencaP, enderecoP, Plat1, Plng2, nomeP);
-                                            result.add(listaAdapter);
-                                        }
-                                    }
-                                }
-
-                            }while (cursore.moveToNext());
-                        }*/
                     }
                 } else if (endereco == 1) {
                     Endereco();
@@ -291,24 +266,6 @@ public class Buscar extends Fragment implements View.OnClickListener {
     }
 
     public void Endereco() {
-
-       /* BancoDeDados bd = new BancoDeDados(getActivity());
-        SQLiteDatabase banco = bd.getReadableDatabase();
-        Cursor cursore = banco.query("Casos", null, null, null, null, null, null);
-        if (cursore.moveToFirst()) {
-            do {
-                String nomeP = cursore.getString(cursore.getColumnIndex("nomePessoaDoenca"));
-                String  doencaP = cursore.getString(cursore.getColumnIndex("tipoDoenca"));
-                String enderecoP = cursore.getString(cursore.getColumnIndex("enderecoDoenca")).toLowerCase();
-                Double Plat1 = cursore.getDouble(cursore.getColumnIndex("latDoenca"));
-                 Double Plng2 = cursore.getDouble(cursore.getColumnIndex("lngDoenca"));
-
-                if (enderecoP.contains(etendereco)){
-                    ListaAdapter listaAdapter = new ListaAdapter(doencaP, enderecoP, Plat1, Plng2, nomeP);
-                    result.add(listaAdapter);
-                }
-            } while (cursore.moveToNext());
-        }*/
 
         for (int j = 0; j < diseases.size(); j++) {
             name = diseases.get(j).getNameUser();
