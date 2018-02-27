@@ -55,8 +55,8 @@
 
     <string-array name="pessoas">
         <item>Médico</item>
-        <item>agente de la salud</item>
-        <item>Administrador</item>
+        <item>Agente de la salud</item>
+        <item>Población</item>
     </string-array>
 
 </resources>

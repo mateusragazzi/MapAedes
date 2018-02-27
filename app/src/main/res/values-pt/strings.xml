@@ -65,11 +65,13 @@
     <string-array name="pessoas">
         <item>Médico</item>
         <item>Agente de saúde</item>
-        <item>Administrador</item>
+        <item>Populacão</item>
     </string-array>
 
 
     <!-- Traduzir -->
+    <string name="caso_sucesso">Caso Registrado</string>
+    <string name="caso_falho">O caso não pode ser registrado. Conecte-se a internet e tente novamente.</string>
     <string name="cadastrar">Cadastrar</string>
     <string name="search_list">Lista</string>
     <string name="search_grafico">Gráfico</string>

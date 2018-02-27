@@ -18,16 +18,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * Created by zazah on 13/02/2017.
- */
-
 public class Login extends AppCompatActivity {
     @BindView(R.id.login_user)
     EditText mLoginUser;
     @BindView(R.id.login_pswd)
     EditText mLoginPswd;
-
 
     int valorIncorreto = 0;
 
@@ -37,7 +32,7 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.login);
             ButterKnife.bind(this);
 
-        List<LoggedUser> userTotal = LoggedUser.listAll(LoggedUser.class);
+        List<LoggedUser> userTotal = LoggedUser.findWithQuery(LoggedUser.class, "SELECT * FROM LOGGED_USER");
 
         if (userTotal.size() != 0) {
             Intent intent = new Intent(Login.this, Main.class);

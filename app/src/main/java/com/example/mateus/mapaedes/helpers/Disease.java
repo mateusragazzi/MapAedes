@@ -2,35 +2,17 @@ package com.example.mateus.mapaedes.helpers;
 
 import com.orm.SugarRecord;
 
-/**
- * Created by zazah on 19/10/2017.
- */
-
-public class Disease extends SugarRecord<Disease> {
-    public long registerID;
-    public String disease;
-    public String nameUser;
-    public String address;
-    public String date;
-    public Double lat;
-    public Double lng;
+public class Disease extends SugarRecord {
+    private long registerID;
+    private String disease;
+    private String nameUser;
+    private String address;
+    private String date;
+    private Double lat;
+    private Double lng;
 
 
     public Disease() {
-    }
-
-    public Disease(long registerID, String disease, String nameUser, String address, String date, Double lat, Double lng) {
-        this.registerID = registerID;
-        this.disease = disease;
-        this.nameUser = nameUser;
-        this.address = address;
-        this.date = date;
-        this.lat = lat;
-        this.lng = lng;
-    }
-
-    public long getRegisterID() {
-        return registerID;
     }
 
     public void setRegisterID(long registerID) {
@@ -59,10 +41,6 @@ public class Disease extends SugarRecord<Disease> {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getDate() {
-        return date;
     }
 
     public void setDate(String date) {

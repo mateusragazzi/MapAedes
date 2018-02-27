@@ -86,7 +86,7 @@ public class Main extends AppCompatActivity
     public SupportMapFragment mFragMap = null;
     public static LatLng positionMarker;
     protected LocationManager locationManager;
-
+    public static final String BASE_URL = "http://localhost/mapaedes/model/get_model.php?type=getAllFromTable&table=wp_disease";
 
     @BindView(R.id.content_main)
     RelativeLayout mContentMain;
@@ -175,13 +175,13 @@ public class Main extends AppCompatActivity
         List<LoggedUser> userTotal = LoggedUser.listAll(LoggedUser.class);
         // 0 ou 1
         int tipo = userTotal.get(0).getUser().getType();
+        //Casos
         if (tipo == 0) {
             mMenu.findItem(R.id.nav_title_focos).setVisible(false);
             mMenu.findItem(R.id.nav_title_dois).setVisible(false);
             configuraTitle(mMenu.findItem(R.id.nav_title_casos));
             switch (item.getItemId()) {
                 case R.id.nav_map:
-
                     mFragMap = new SupportMapFragment();
                     mFragMap.getMapAsync(new OnMapReadyCallback() {
                         @Override
@@ -198,13 +198,10 @@ public class Main extends AppCompatActivity
 
 
                     });
-
-
                     fm.beginTransaction()
                             .replace(R.id.Conteiner, mFragMap)
                             .addToBackStack("")
                             .commit();
-
                     break;
                 case R.id.nav_addcasos:
                     frag = new AdicionarCaso();
@@ -242,13 +239,11 @@ public class Main extends AppCompatActivity
                         @Override
                         public void onMapReady(GoogleMap googleMap) {
                             mMap = googleMap;
-
                             try {
                                 configuraMapa();
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            //gotoLocation(CG_LAT,CG_LGT, DEFAULTZOM);
                         }
 
 
@@ -257,7 +252,6 @@ public class Main extends AppCompatActivity
                             .replace(R.id.Conteiner, mFragMap)
                             .addToBackStack("")
                             .commit();
-
                     break;
                 case R.id.nav_addfoco:
                     frag = new AdicionarFoco();
@@ -283,8 +277,48 @@ public class Main extends AppCompatActivity
                     sair();
                     break;
             }
-        }
+        } else if (tipo == 2) {
+            mMenu.findItem(R.id.nav_title_casos).setVisible(false);
+            mMenu.findItem(R.id.nav_title_dois).setVisible(false);
+            mMenu.findItem(R.id.nav_title_focos).setVisible(false);
+            switch (item.getItemId()) {
+                case R.id.nav_map:
+                    mFragMap = new SupportMapFragment();
+                    mFragMap.getMapAsync(new OnMapReadyCallback() {
+                        @Override
+                        public void onMapReady(GoogleMap googleMap) {
+                            mMap = googleMap;
+                            try {
+                                configuraMapa();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
 
+
+                    });
+                    fm.beginTransaction()
+                            .replace(R.id.Conteiner, mFragMap)
+                            .addToBackStack("")
+                            .commit();
+                    break;
+                case R.id.nav_buscar:
+                    frag = new Buscar();
+                    trocaFrag(fm, frag);
+                    break;
+                case R.id.nav_info:
+                    frag = new Informacoes();
+                    trocaFrag(fm, frag);
+                    break;
+                case R.id.nav_settings:
+                    frag = new Configuracoes();
+                    trocaFrag(fm, frag);
+                    break;
+                case R.id.nav_logout:
+                    sair();
+                    break;
+            }
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -376,7 +410,7 @@ public class Main extends AppCompatActivity
                                     BitmapDescriptorFactory.HUE_AZURE))
                             .position(positionMarker);
 
-                    mMap.addMarker(options5);
+                    //mMap.addMarker(options5);
                     drawCircle(positionMarker);
                     //BitmapDescriptorFactory.fromResource(R.mipmap.point
                     break;
@@ -431,13 +465,9 @@ public class Main extends AppCompatActivity
         alertDialog.setMessage("Caso saia, você será deslogado de sua conta");
         alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-               /* SQLiteDatabase banco = bd.getReadableDatabase();
 
-                banco.execSQL("DELETE FROM login"); //delete all rows in a table*/
+                LoggedUser.executeQuery("DELETE FROM LOGGED_USER");
 
-                List<LoggedUser> loggedUsers = LoggedUser.listAll(LoggedUser.class);
-
-                LoggedUser.deleteAll(LoggedUser.class);
                 Intent myIntent = new Intent(((Dialog) dialog).getContext(), Login.class);
                 myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(myIntent);
@@ -537,11 +567,10 @@ public class Main extends AppCompatActivity
 
             disease.save();
 
-            Toast.makeText(this, " Case registered", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.caso_sucesso, Toast.LENGTH_SHORT).show();
 
         } catch (IOException e) {
-            Toast.makeText(this, " O caso não pode ser registrado. Conecte-se a internet, e tente" +
-                    " novamente.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.caso_falho, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -555,13 +584,7 @@ public class Main extends AppCompatActivity
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
                 (this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+
             return;
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);

@@ -2,30 +2,16 @@ package com.example.mateus.mapaedes.helpers;
 
 import com.orm.SugarRecord;
 
-/**
- * Created by zazah on 19/10/2017.
- */
-
-public class User extends SugarRecord<User> {
+public class User extends SugarRecord {
     public String name;
-    public String email;
-    public String password;
-    public String city;
-    public Double lat;
-    public Double lng;
-    public int type;
+    private String email;
+    private String password;
+    private String city;
+    private Double lat;
+    private Double lng;
+    private int type;
 
     public User() {}
-
-    public User(String name, String email, String password, String city, Double lat, Double lng, int type) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.city = city;
-        this.lat = lat;
-        this.lng = lng;
-        this.type = type;
-    }
 
     public int getType() {
         return type;
