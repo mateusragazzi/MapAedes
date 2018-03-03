@@ -50,10 +50,10 @@ public class AdicionarCaso extends Fragment {
         Endereço = (AutoCompleteTextView) v.findViewById(R.id.endereço);
         nomeE = (EditText) v.findViewById(R.id.NomeP);
 
-        Endereço.setOnClickListener(mAutocompleteClickListener);
-
 
         Main act = (Main) getActivity();
+        Endereço.setOnClickListener(mAutocompleteClickListener);
+
         mAdapter = new PlaceAutocompleteAdapter(act, android.R.layout.simple_list_item_1,
                 act.getmGoogleApiClient(), BOUNS_CAMPO_GRANDE, null);
         Endereço.setAdapter(mAdapter);

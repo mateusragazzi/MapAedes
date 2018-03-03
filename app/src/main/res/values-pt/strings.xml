@@ -70,12 +70,13 @@
 
 
     <!-- Traduzir -->
-    <string name="caso_sucesso">Caso Registrado</string>
-    <string name="caso_falho">O caso não pode ser registrado. Conecte-se a internet e tente novamente.</string>
-    <string name="cadastrar">Cadastrar</string>
+    <string name="caso_sucesso">Case Registrado!</string>
+    <string name="caso_falho">O caso não pode ser registrado. Conecte-se com a Internet e tente novamente!</string>
+    <string name="cadastrar">Registre</string>
     <string name="search_list">Lista</string>
-    <string name="search_grafico">Gráfico</string>
+    <string name="search_grafico">Grafico</string>
     <string name="search_mapa">Mapa</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

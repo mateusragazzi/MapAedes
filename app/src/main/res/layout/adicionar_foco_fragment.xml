@@ -18,7 +18,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="18sp" />
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/ed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

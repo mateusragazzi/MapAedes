@@ -2,7 +2,6 @@ package com.example.mateus.mapaedes.Activities;
 
 import android.Manifest;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,12 +9,9 @@ import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -28,6 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.style.TextAppearanceSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -74,7 +71,7 @@ public class Main extends AppCompatActivity
         Configuracoes.OnFragmentInteractionListener,
         Informacoes.OnFragmentInteractionListener,
         MeusCasosAdicionados.OnFragmentInteractionListener,
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 
     private String mUser;
     private String[] mUsers;
@@ -406,11 +403,10 @@ public class Main extends AppCompatActivity
                     MarkerOptions options5 = new MarkerOptions()
                             .title(name + " - Foco")
                             .snippet(address)
-                            .icon(BitmapDescriptorFactory.defaultMarker(
-                                    BitmapDescriptorFactory.HUE_AZURE))
+                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.marker_black))
                             .position(positionMarker);
 
-                    //mMap.addMarker(options5);
+                    mMap.addMarker(options5);
                     drawCircle(positionMarker);
                     //BitmapDescriptorFactory.fromResource(R.mipmap.point
                     break;
@@ -423,8 +419,8 @@ public class Main extends AppCompatActivity
 
     public static void drawCircle(LatLng point) {
 
-      /*  // Instantiating CircleOptions to draw a circle around the marker
-        CircleOptions circleOptions = new CircleOptions();
+        // Instantiating CircleOptions to draw a circle around the marker
+      /*  CircleOptions circleOptions = new CircleOptions();
 
         // Specifying the center of the circle
         circleOptions.center(point);
@@ -442,17 +438,17 @@ public class Main extends AppCompatActivity
         circleOptions.strokeWidth(2);
 
         // Adding the circle to the GoogleMap
-        mMap.addCircle(circleOptions);
+        mMap.addCircle(circleOptions);*/
 
-        */
+
         for (int rad = 100; rad <= 500; rad = rad + 100) {
 
-            CircleOptions circleOptions = new CircleOptions()
-                    .center(point)   //set center
-                    .radius(rad)   //set radius in meters
-                    .fillColor(Color.TRANSPARENT)  //default
-                    .strokeColor(0x1000000)
-                    .strokeWidth(5);
+            CircleOptions circleOptions = new CircleOptions();
+            circleOptions.center(point);   //set center
+            circleOptions.radius(rad);  //set radius in meters
+            circleOptions.fillColor(Color.argb(70, 255, 0, 0));  //default
+            circleOptions.strokeColor(Color.TRANSPARENT);
+            circleOptions.strokeWidth(5);
 
             mMap.addCircle(circleOptions);
         }
@@ -500,21 +496,6 @@ public class Main extends AppCompatActivity
         tools.setTitle(s);
     }
 
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
 
     public GoogleApiClient getmGoogleApiClient() {
         if (mGoogleApiClient == null) {
@@ -567,10 +548,13 @@ public class Main extends AppCompatActivity
 
             disease.save();
 
-            Toast.makeText(this, R.string.caso_sucesso, Toast.LENGTH_SHORT).show();
+            //  Toast.makeText(this, R.string.caso_sucesso, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "sucesso", Toast.LENGTH_SHORT).show();
+
 
         } catch (IOException e) {
-            Toast.makeText(this, R.string.caso_falho, Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, R.string.caso_falho, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "falha", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -580,43 +564,55 @@ public class Main extends AppCompatActivity
     }
 
     public void LOCATUAL(View v) {
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
-                (this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
+        callConnection();
+    }
+
+    private synchronized void callConnection() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addOnConnectionFailedListener(this)
+                .addConnectionCallbacks(this)
+                .addApi(LocationServices.API)
+                .build();
+        mGoogleApiClient.connect();
+    }
+
+
+    // LISTENER
+    @Override
+    public void onConnected(Bundle bundle) {
+        Log.i("LOG", "onConnected(" + bundle + ")");
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        Location l = LocationServices
+                .FusedLocationApi
+                .getLastLocation(mGoogleApiClient);
 
+        if(l != null){
+            Log.i("LOG", "latitude: "+l.getLatitude());
+            Log.i("LOG", "longitude: "+l.getLongitude());
+
+            AdicionarFoco adicionarFoco = new AdicionarFoco();
+            adicionarFoco.endereço.setText(l.getLatitude()+" | "+l.getLongitude());
+        }
     }
 
     @Override
-    public void onLocationChanged(Location location) {
-
-
-        double lat = location.getLatitude();
-        double lng = location.getLongitude();
-
-        Toast.makeText(this, " Lat:" + location.getLatitude() + "Lng: " + location.getLongitude(), Toast.LENGTH_SHORT).show();
-
-
-        // adicionarFoco.endereço.setText();
+    public void onConnectionSuspended(int i) {
+        Log.i("LOG", "onConnectionSuspended(" + i + ")");
     }
-
     @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String s) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String s) {
-
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.i("LOG", "onConnectionFailed("+connectionResult+")");
     }
 
     public void ADICIONARFOCO(View view) {

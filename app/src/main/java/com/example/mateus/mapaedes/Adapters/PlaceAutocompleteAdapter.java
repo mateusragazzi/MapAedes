@@ -2,20 +2,22 @@ package com.example.mateus.mapaedes.Adapters;
 
 
 import android.content.Context;
+import android.graphics.Typeface;
+import android.text.style.CharacterStyle;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.Toast;
 
-
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.AutocompletePredictionBuffer;
 import com.google.android.gms.location.places.Places;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ public class PlaceAutocompleteAdapter
     private Context context;
     private int cont = 0;
     private AutocompleteFilter mPlaceFilter;
+    private static final CharacterStyle STYLE_BOLD = new StyleSpan(Typeface.BOLD);
 
     public PlaceAutocompleteAdapter(Context context, int resource, GoogleApiClient googleApiClient,
                                     LatLngBounds bounds, AutocompleteFilter filter) {
@@ -119,7 +122,7 @@ public class PlaceAutocompleteAdapter
             while (iterator.hasNext()) {
                 AutocompletePrediction prediction = iterator.next();
                 // Get the details of this prediction and copy it into a new PlaceAutocomplete object.
-                //resultList.add(new PlaceAutocomplete(prediction.getPlaceId(), prediction.getDescription()));
+                resultList.add(new PlaceAutocomplete(prediction.getPlaceId(), prediction.getFullText(STYLE_BOLD)));
             }
             autocompletePredictions.release();
 
@@ -156,5 +159,7 @@ public class PlaceAutocompleteAdapter
 
         return l;
     }*/
+
+
 
 }

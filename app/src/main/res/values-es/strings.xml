@@ -44,6 +44,12 @@
     <string name="resultado">Resultados</string>
     <string name="loc_atual">Ubicación actual</string>
 
+    <string name="caso_sucesso">Si está registrado</string>
+    <string name="caso_falho">El caso no puede ser registrado. Conéctate a Internet y vuelve a intentarlo.</string>
+    <string name="cadastrar">Registro</string>
+    <string name="search_list">Lista</string>
+    <string name="search_grafico">Gráfico</string>
+    <string name="search_mapa">Mapa</string>
 
     <string-array name="doencas">
         <item>Dengue</item>

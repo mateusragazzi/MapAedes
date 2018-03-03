@@ -49,6 +49,10 @@
         <string name="resultado">Résultat</string>
         <string name="loc_atual">Emplacement actuel</string>
 
+        <string name="caso_sucesso">Cas enregistré</string>
+        <string name="caso_falho">Laffaire ne peut pas être enregistrée. Connectez-vous à Internet et réessayez.</string>
+
+
         <string-array name="users">
             <item>Docteur</item>
             <item>Agent de Santé</item>

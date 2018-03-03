@@ -2,7 +2,7 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <item android:checkableBehavior="single">
         <item
             android:id="@+id/nav_map"
             android:icon="@drawable/ic_menu_map"
@@ -68,6 +68,8 @@
             </menu>
         </item>
 
+
+
         <item
             android:id="@+id/nav_buscar"
             android:icon="@drawable/ic_menu_search"
@@ -87,6 +89,6 @@
             android:icon="@drawable/ic_menu_logoff"
             android:title="@string/sair"/>
 
-    </group>
+    </item>
 
 </menu>

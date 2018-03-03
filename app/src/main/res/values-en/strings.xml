@@ -44,6 +44,13 @@
     <string name="resultado">Results</string>
     <string name="loc_atual">Current Location</string>
 
+    <string name="caso_sucesso">Case Registered!</string>
+    <string name="caso_falho">The case could not be registered. Connect to the internet and try again.</string>
+    <string name="cadastrar">Register</string>
+    <string name="search_list">List</string>
+    <string name="search_grafico">Graphics</string>
+    <string name="search_mapa">Map</string>
+
 
     <string-array name="doencas">
         <item>Dengue</item>
