@@ -30,12 +30,13 @@ public class MeusCasosAdicionados extends Fragment {
 
         lstDados = (ListView) v.findViewById(R.id.listView);
 
-        lstDados.setAdapter(new AddAdapter(getActivity(), doenca, nome, endereco));
+
 
         List<Disease> disease = Disease.findWithQuery(Disease.class, "SELECT * FROM DISEASE");
 
         for (int i = 0; i < disease.size(); i++) {
            // String name = disease.get(i).getNameUser();
+            String name = "a";
             String diseases = disease.get(i).getDisease();
             String address = disease.get(i).getAddress();
 
@@ -43,10 +44,10 @@ public class MeusCasosAdicionados extends Fragment {
                 case "Dengue":
                     doenca.add(R.mipmap.red);
                     break;
-                case "Zika vírus":
+                case "Zika":
                     doenca.add(R.mipmap.green);
                     break;
-                case "Chikungunya":
+                case "Chicungunya":
                     doenca.add(R.mipmap.blue);
                     break;
                 case "Guillain barré":
@@ -59,10 +60,10 @@ public class MeusCasosAdicionados extends Fragment {
                     doenca.add(R.mipmap.point);
 
             }
- //           nome.add(name + " - " + diseases);
+            nome.add(diseases);
             endereco.add(address);
         }
-
+        lstDados.setAdapter(new AddAdapter(getActivity(), doenca, nome, endereco));
 
         return v;
     }

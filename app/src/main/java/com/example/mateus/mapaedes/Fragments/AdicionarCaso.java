@@ -42,10 +42,10 @@ public class AdicionarCaso extends Fragment {
         spinner.setAdapter(opcoes);
 
         opcoes.add("Dengue");
-        opcoes.add("Zika vírus");
-        opcoes.add("Chikungunya");
+        opcoes.add("Zika");
+        opcoes.add("Chicungunya");
         opcoes.add("Nyongnyong");
-        opcoes.add("Guillaint barré");
+        opcoes.add("Guillain barré");
 
         Endereço = (AutoCompleteTextView) v.findViewById(R.id.endereço);
         nomeE = (EditText) v.findViewById(R.id.NomeP);

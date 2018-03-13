@@ -31,6 +31,12 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.mateus.mapaedes.Fragments.AdicionarCaso;
 import com.example.mateus.mapaedes.Fragments.AdicionarFoco;
 import com.example.mateus.mapaedes.Fragments.Buscar;
@@ -61,8 +67,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -87,6 +95,7 @@ public class Main extends AppCompatActivity
     protected LocationManager locationManager;
     public static final String BASE_URL = "http://localhost/mapaedes/model/get_model.php?type=getAllFromTable&table=wp_disease";
 
+
     @BindView(R.id.content_main)
     RelativeLayout mContentMain;
     @BindView(R.id.nav_view)
@@ -95,6 +104,16 @@ public class Main extends AppCompatActivity
     DrawerLayout mDrawerLayout;
     @BindView(R.id.main_toolbar)
     Toolbar mToolbar;
+
+
+    public Date dateD;
+    public String nameD;
+    public String addressD;
+    public String diseaseD;
+    public String typeD;
+    public Double lat=0.2, lng=1.1;
+    public long idUser;
+
 
 
     List<LoggedUser> cityUser = LoggedUser.listAll(LoggedUser.class);
@@ -360,7 +379,7 @@ public class Main extends AppCompatActivity
 
                     mMap.addMarker(options);
                     break;
-                case "Zika vírus":
+                case "Zika":
                     MarkerOptions options1 = new MarkerOptions()
                             //.title(name + " - Zika vírus")
                             .snippet(address)
@@ -371,7 +390,7 @@ public class Main extends AppCompatActivity
 
                     mMap.addMarker(options1);
                     break;
-                case "Chikungunya":
+                case "Chicungunya":
                     MarkerOptions options2 = new MarkerOptions()
                             //.title(name + " - Chicungunya")
                             .snippet(address)
@@ -391,7 +410,7 @@ public class Main extends AppCompatActivity
 
                     mMap.addMarker(options3);
                     break;
-                case "Guillaint barré":
+                case "Guillain barré":
                     MarkerOptions options4 = new MarkerOptions()
                             //.title(name + " - Guillaint barré")
                             .snippet(address)
@@ -422,38 +441,38 @@ public class Main extends AppCompatActivity
     public static void drawCircle(LatLng point) {
 
         // Instantiating CircleOptions to draw a circle around the marker
-      /*  CircleOptions circleOptions = new CircleOptions();
+        CircleOptions circleOptions = new CircleOptions();
 
         // Specifying the center of the circle
         circleOptions.center(point);
 
         // Radius of the circle
-        circleOptions.radius(500);
+        circleOptions.radius(300);
 
         // Border color of the circle
-        circleOptions.strokeColor(Color.BLACK);
+        circleOptions.strokeColor(Color.RED);
 
         // Fill color of the circle
-        circleOptions.fillColor(0x550000);
+        circleOptions.fillColor(0x35ff0000);
 
         // Border width of the circle
         circleOptions.strokeWidth(2);
 
         // Adding the circle to the GoogleMap
-        mMap.addCircle(circleOptions);*/
+        mMap.addCircle(circleOptions);
 
 
-        for (int rad = 100; rad <= 500; rad = rad + 100) {
+       /* for (int rad = 50; rad <= 150; rad = rad + 50) {
 
             CircleOptions circleOptions = new CircleOptions();
             circleOptions.center(point);   //set center
             circleOptions.radius(rad);  //set radius in meters
-            circleOptions.fillColor(Color.argb(70, 255, 0, 0));  //default
+            circleOptions.fillColor(Color.argb(120, 255, 0, 0));  //default
             circleOptions.strokeColor(Color.TRANSPARENT);
             circleOptions.strokeWidth(5);
 
             mMap.addCircle(circleOptions);
-        }
+        }*/
 
     }
 
@@ -518,33 +537,34 @@ public class Main extends AppCompatActivity
 
     public void PinarMapa(View v) throws IOException {
         try {
+            typeD = "focus";
             Calendar c = Calendar.getInstance();
             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
 
-            Date datePerson = df.parse(df.format(c.getTime()));
-            String namePerson = AdicionarCaso.nomeE.getText().toString();
-            String addressPerson = AdicionarCaso.Endereço.getText().toString();
-            String diseasePerson = (String) AdicionarCaso.spinner.getSelectedItem();
+             dateD = df.parse(df.format(c.getTime()));
+             nameD= AdicionarCaso.nomeE.getText().toString();
+             addressD = AdicionarCaso.Endereço.getText().toString();
+             diseaseD = (String) AdicionarCaso.spinner.getSelectedItem();
 
             Geocoder gcc = new Geocoder(this);
-            List<Address> list = gcc.getFromLocationName(addressPerson, 1);
+            List<Address> list = gcc.getFromLocationName(addressD, 1);
             Address address = list.get(0);
 
-            final double lat = address.getLatitude();
+            lat = address.getLatitude();
 
-            final double lng = address.getLongitude();
+             lng = address.getLongitude();
 
             // 0 ou 1 no get()
 
-            long idUser = cityUser.get(0).getId();
+             idUser = cityUser.get(0).getId();
 
             Disease disease = new Disease();
 
             //disease.setRegisterID(idUser);
-            disease.setDate(datePerson);
-            disease.setDisease(diseasePerson);
+            disease.setDate(dateD);
+            disease.setDisease(diseaseD);
             //disease.setNameUser(namePerson);
-            disease.setAddress(addressPerson);
+            disease.setAddress(addressD);
             disease.setLat(lat);
             disease.setLng(lng);
 
@@ -553,7 +573,10 @@ public class Main extends AppCompatActivity
             //  Toast.makeText(this, R.string.caso_sucesso, Toast.LENGTH_SHORT).show();
             Toast.makeText(this, "sucesso", Toast.LENGTH_SHORT).show();
 
+            postData();
 
+            AdicionarCaso.Endereço.setText("");
+            AdicionarCaso.nomeE.setText("");
         } catch (IOException e) {
             // Toast.makeText(this, R.string.caso_falho, Toast.LENGTH_SHORT).show();
             Toast.makeText(this, "falha", Toast.LENGTH_SHORT).show();
@@ -619,52 +642,129 @@ public class Main extends AppCompatActivity
         Log.i("LOG", "onConnectionFailed("+connectionResult+")");
     }
 
-    public void ADICIONARFOCO(View view) {
+    public void ADICIONARFOCO(View view) throws IOException {
+        typeD= "focus";
+        diseaseD = "focus";
 
-        String addressFocus = AdicionarFoco.endereço.getText().toString().toLowerCase();
+        addressD = AdicionarFoco.endereço.getText().toString().toLowerCase();
         Geocoder geocoder;
         geocoder = new Geocoder(this, Locale.getDefault());
         List<Address> list = null;
 
         try {
-            list = geocoder.getFromLocationName(addressFocus, 1);
+            list = geocoder.getFromLocationName(addressD, 1);
         } catch (IOException e1) {
             e1.printStackTrace();
         }
         Address add = list.get(0);
 
-        final double lat = add.getLatitude();
-        final double lng = add.getLongitude();
+        lat = add.getLatitude();
+        lng = add.getLongitude();
 
         String foco = "Foco";
 
+
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-        Date datePerson = null;
+        dateD = null;
         try {
-            datePerson = df.parse(df.format(c.getTime()));
+            dateD = df.parse(df.format(c.getTime()));
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
         // 0 ou 1 no get()
 
-        long idUser = cityUser.get(0).getId();
+        idUser = cityUser.get(0).getId();
 
 
         Disease disease = new Disease();
 
 
-        disease.setDate(datePerson);
+        disease.setDate(dateD);
         disease.setDisease(foco);
         //disease.setNameUser(foco);
-        disease.setAddress(foco);
+        disease.setAddress(addressD);
         disease.setLat(lat);
         disease.setLng(lng);
 
         disease.save();
-        Toast.makeText(this, "Focus registered!", Toast.LENGTH_SHORT).show();
+
+        postData();
+        Toast.makeText(this, "Foco Registrado!", Toast.LENGTH_SHORT).show();
+
     }
 
 
-}
+    public void postData() {
+      /*  try {
+            int user = 1;
+            //type=case&disease=dengue&address=aa&lat=11&lng=12&userID=1
+            URL httpbinEndpoint = new URL("http://mapaedes.net/wp-json/api/v1/disease");
+            HttpURLConnection myConnection
+                    = (HttpURLConnection) httpbinEndpoint.openConnection();
+
+            myConnection.setRequestMethod("POST");
+
+            typeD = "case";
+            diseaseD = "dengue";
+            addressD = "Rua Jintoku Minei, 45";
+            lat = 54.155552;
+            lng = 42.664512;
+
+
+
+            // Create the data
+            String disease = "type=" + typeD + "&disease=" + diseaseD + "&address=" + addressD + "&lat=" + lat +
+                    "&lng=" + lng + "&userID=" + user;
+
+            Log.v("DOENÇAS", String.valueOf(disease));
+
+            // Enable writing
+            myConnection.setDoOutput(true);
+
+            // Write the data
+            myConnection.getOutputStream().write(disease.getBytes());
+
+        }catch (IOException e ){
+            e.printStackTrace();
+        }
+        */
+        RequestQueue MyRequestQueue = Volley.newRequestQueue(this);
+        String url = "http://mapaedes.net/wp-json/api/v1/disease";
+        StringRequest MyStringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //This code is executed if the server responds, whether or not the response contains data.
+                //The String 'response' contains the server's response.
+            }
+        }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //This code is executed if there is an error.
+            }
+        }) {
+            protected Map<String, String> getParams() {
+                Map<String, String> MyData = new HashMap<String, String>();
+
+
+                //type=case&disease=dengue&address=aa&lat=11&lng=12&userID=1
+                MyData.put("type", typeD.toLowerCase());
+                MyData.put("disease", diseaseD.toLowerCase());
+                MyData.put("address", addressD.toLowerCase());
+                MyData.put("lat", String.valueOf(lat));
+                MyData.put("lng", String.valueOf(lng));
+                MyData.put("userID", String.valueOf(idUser));
+                return MyData;
+            }
+        };
+
+        MyRequestQueue.add(MyStringRequest);
+    }
+
+
+    }
+
+
+
+
