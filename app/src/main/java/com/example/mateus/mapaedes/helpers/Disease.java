@@ -2,22 +2,35 @@ package com.example.mateus.mapaedes.helpers;
 
 import com.orm.SugarRecord;
 
+import java.util.Date;
+
 public class Disease extends SugarRecord {
-    private long registerID;
+    private String type;
     private String disease;
-    private String nameUser;
     private String address;
-    private String date;
     private Double lat;
     private Double lng;
+    private Date date;
+    private int active;
+    private int userID;
 
+    public Disease() {}
 
-    public Disease() {
-    }
+    public String getType() { return type; }
 
-    public void setRegisterID(long registerID) {
-        this.registerID = registerID;
-    }
+    public void setType(String type) { this.type = type; }
+
+    public Date getDate() { return date; }
+
+    public void setDate(Date date) { this.date = date; }
+
+    public int getActive() { return active; }
+
+    public void setActive(int active) { this.active = active; }
+
+    public int getUserID() { return userID; }
+
+    public void setUserID(int userID) { this.userID = userID; }
 
     public String getDisease() {
         return disease;
@@ -27,24 +40,12 @@ public class Disease extends SugarRecord {
         this.disease = disease;
     }
 
-    public String getNameUser() {
-        return nameUser;
-    }
-
-    public void setNameUser(String nameUser) {
-        this.nameUser = nameUser;
-    }
-
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 
     public Double getLat() {

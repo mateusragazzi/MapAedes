@@ -35,7 +35,7 @@ public class MeusCasosAdicionados extends Fragment {
         List<Disease> disease = Disease.findWithQuery(Disease.class, "SELECT * FROM DISEASE");
 
         for (int i = 0; i < disease.size(); i++) {
-            String name = disease.get(i).getNameUser();
+           // String name = disease.get(i).getNameUser();
             String diseases = disease.get(i).getDisease();
             String address = disease.get(i).getAddress();
 
@@ -59,7 +59,7 @@ public class MeusCasosAdicionados extends Fragment {
                     doenca.add(R.mipmap.point);
 
             }
-            nome.add(name + " - " + diseases);
+ //           nome.add(name + " - " + diseases);
             endereco.add(address);
         }
 

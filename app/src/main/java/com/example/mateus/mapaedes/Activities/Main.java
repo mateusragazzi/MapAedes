@@ -57,8 +57,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -338,7 +340,7 @@ public class Main extends AppCompatActivity
         List<Disease> diseasesList = Disease.listAll(Disease.class);
         for (int i = 0; i < diseasesList.size(); i++) {
             String disease = diseasesList.get(i).getDisease();
-            String name = diseasesList.get(i).getNameUser();
+            //String name = diseasesList.get(i).getNameUser();
             String address = diseasesList.get(i).getAddress();
 
             Double latP = diseasesList.get(i).getLat();
@@ -349,7 +351,7 @@ public class Main extends AppCompatActivity
             switch (disease) {
                 case "Dengue":
                     MarkerOptions options = new MarkerOptions()
-                            .title(name + " - Dengue")
+                            //.title(name + " - Dengue")
                             .snippet(address)
                             .icon(BitmapDescriptorFactory.defaultMarker(
                                     BitmapDescriptorFactory.HUE_RED))
@@ -360,7 +362,7 @@ public class Main extends AppCompatActivity
                     break;
                 case "Zika vírus":
                     MarkerOptions options1 = new MarkerOptions()
-                            .title(name + " - Zika vírus")
+                            //.title(name + " - Zika vírus")
                             .snippet(address)
                             .icon(BitmapDescriptorFactory.defaultMarker(
                                     BitmapDescriptorFactory.HUE_GREEN))
@@ -371,7 +373,7 @@ public class Main extends AppCompatActivity
                     break;
                 case "Chikungunya":
                     MarkerOptions options2 = new MarkerOptions()
-                            .title(name + " - Chicungunya")
+                            //.title(name + " - Chicungunya")
                             .snippet(address)
                             .icon(BitmapDescriptorFactory.defaultMarker(
                                     BitmapDescriptorFactory.HUE_AZURE))
@@ -381,7 +383,7 @@ public class Main extends AppCompatActivity
                     break;
                 case "Nyongnyong":
                     MarkerOptions options3 = new MarkerOptions()
-                            .title(name + " - Nyongnyong")
+                            //.title(name + " - Nyongnyong")
                             .snippet(address)
                             .icon(BitmapDescriptorFactory.defaultMarker(
                                     BitmapDescriptorFactory.HUE_ORANGE))
@@ -391,7 +393,7 @@ public class Main extends AppCompatActivity
                     break;
                 case "Guillaint barré":
                     MarkerOptions options4 = new MarkerOptions()
-                            .title(name + " - Guillaint barré")
+                            //.title(name + " - Guillaint barré")
                             .snippet(address)
                             .icon(BitmapDescriptorFactory.defaultMarker(
                                     BitmapDescriptorFactory.HUE_YELLOW))
@@ -401,7 +403,7 @@ public class Main extends AppCompatActivity
                     break;
                 case "Foco":
                     MarkerOptions options5 = new MarkerOptions()
-                            .title(name + " - Foco")
+                            //.title(name + " - Foco")
                             .snippet(address)
                             .icon(BitmapDescriptorFactory.fromResource(R.mipmap.marker_black))
                             .position(positionMarker);
@@ -519,7 +521,7 @@ public class Main extends AppCompatActivity
             Calendar c = Calendar.getInstance();
             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
 
-            String datePerson = df.format(c.getTime());
+            Date datePerson = df.parse(df.format(c.getTime()));
             String namePerson = AdicionarCaso.nomeE.getText().toString();
             String addressPerson = AdicionarCaso.Endereço.getText().toString();
             String diseasePerson = (String) AdicionarCaso.spinner.getSelectedItem();
@@ -538,10 +540,10 @@ public class Main extends AppCompatActivity
 
             Disease disease = new Disease();
 
-            disease.setRegisterID(idUser);
+            //disease.setRegisterID(idUser);
             disease.setDate(datePerson);
             disease.setDisease(diseasePerson);
-            disease.setNameUser(namePerson);
+            //disease.setNameUser(namePerson);
             disease.setAddress(addressPerson);
             disease.setLat(lat);
             disease.setLng(lng);
@@ -555,6 +557,8 @@ public class Main extends AppCompatActivity
         } catch (IOException e) {
             // Toast.makeText(this, R.string.caso_falho, Toast.LENGTH_SHORT).show();
             Toast.makeText(this, "falha", Toast.LENGTH_SHORT).show();
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
     }
 
@@ -602,7 +606,7 @@ public class Main extends AppCompatActivity
             Log.i("LOG", "longitude: "+l.getLongitude());
 
             AdicionarFoco adicionarFoco = new AdicionarFoco();
-            adicionarFoco.endereço.setText(l.getLatitude()+" | "+l.getLongitude());
+          //  adicionarFoco.endereço.setText(l.getLatitude()+" | "+l.getLongitude());
         }
     }
 
@@ -636,7 +640,12 @@ public class Main extends AppCompatActivity
 
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-        String datePerson = df.format(c.getTime());
+        Date datePerson = null;
+        try {
+            datePerson = df.parse(df.format(c.getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         // 0 ou 1 no get()
 
@@ -645,10 +654,10 @@ public class Main extends AppCompatActivity
 
         Disease disease = new Disease();
 
-        disease.setRegisterID(idUser);
+
         disease.setDate(datePerson);
         disease.setDisease(foco);
-        disease.setNameUser(foco);
+        //disease.setNameUser(foco);
         disease.setAddress(foco);
         disease.setLat(lat);
         disease.setLng(lng);

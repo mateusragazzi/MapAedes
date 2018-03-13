@@ -3,12 +3,18 @@ package com.example.mateus.mapaedes.helpers;
 import com.orm.SugarRecord;
 
 public class User extends SugarRecord {
-    public String name;
+    private int userID;
+    private String name;
     private String email;
     private String password;
     private String city;
     private Double lat;
     private Double lng;
+    /* 1 for doctors
+     * 2 for Agent
+     * 3 for Population
+     * 4 for administrator
+     */
     private int type;
 
     public User() {}

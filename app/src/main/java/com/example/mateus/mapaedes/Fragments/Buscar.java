@@ -220,7 +220,7 @@ public class Buscar extends Fragment implements View.OnClickListener {
                         String nome = lista.get(i);
                         // i 0 ou 1
                         for (int j = 0; j < diseases.size(); j++) {
-                            name = diseases.get(j).getNameUser();
+                            //name = diseases.get(j).getNameUser();
                             disease = diseases.get(j).getDisease();
                             address = diseases.get(j).getAddress();
                             lat = diseases.get(j).getLat();
@@ -268,7 +268,7 @@ public class Buscar extends Fragment implements View.OnClickListener {
     public void Endereco() {
 
         for (int j = 0; j < diseases.size(); j++) {
-            name = diseases.get(j).getNameUser();
+            //name = diseases.get(j).getNameUser();
             disease = diseases.get(j).getDisease();
             address = diseases.get(j).getAddress();
             lat = diseases.get(j).getLat();
